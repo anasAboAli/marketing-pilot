@@ -1,0 +1,135 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 06 Introduction to Transaction Processing  Concepts & Theory Part 04 B+-Tree Example Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 20 Introduction to Transaction Processing Concepts and Theory Copyright © 2016  Ramez   Elmasri  and  Shamkant  B.  Navathe Modified by:  Iyad   Alshami
+
+--- ppt/slides/slide3.xml ---
+Introduction Transaction Describes  local unit  of  database processing Transaction processing systems Systems with large databases and hundreds of concurrent users Require high  availability  and  fast response  time. E.g.: Banking, Airline Reservation, Stock Markets,  …   Slide 20-  3
+
+--- ppt/slides/slide4.xml ---
+20.1 Introduction to Transaction Processing Single-user DBMS At most  one user  at a time can use the system E.g.: home computer Multiuser DBMS Many users can access the system (database) concurrently E.g.: airline reservations system Single-user DBMSs are mostly restricted to personal computer systems; most other DBMSs are multiuser.  Slide 20-  4
+
+--- ppt/slides/slide5.xml ---
+Introduction to Transaction Processing (cont’d.) Multiprogramming Allows operating system to execute multiple processes concurrently. CPU can only execute at most one process at a time.  Executes commands from one process,  then suspends that process and  executes commands from another process, etc. Slide 20-  5
+
+--- ppt/slides/slide6.xml ---
+Introduction to Transaction Processing (cont’d.) Interleaved processing Processes A and B Parallel processing Processes C and D Slide 20- 6
+
+--- ppt/slides/slide7.xml ---
+Transactions Transaction: an executing program Forms logical unit of database processing Insertion, deletion, modification or retrieval Begin and End transaction statements Specify transaction boundaries Read-only transaction Don’t update just retrieve  Read-write transaction Slide 20-  7
+
+--- ppt/slides/slide8.xml ---
+Simple Database Model Database Item Database  represented as  collection of named data items. Size of a data item  called its  granularity Data item Record Disk block Attribute value of a record Transaction processing concepts  independent   of  item granularity. Slide 20-  8
+
+--- ppt/slides/slide9.xml ---
+Simple Database Model Read and Write Operations read_item(X) Reads a  database item  named  X  into a  program   variable  named  X . Process includes  finding  the  address   of   the   disk   block, and  copying   to  and  from  a memory buffer write_item(X) Writes the  value of program variable X  into the database item named  X Process includes  finding  the  address   of   the   disk   block,  copying  to  and  from  a   memory   buffer, and  storing   the   updated   disk   block   back   to   disk. Slide 20-  9
+
+--- ppt/slides/slide10.xml ---
+Read and Write Operations (cont’d.) Read set  of a transaction Set of all items read Write set  of a transaction Set of all items written Slide 20-  10
+
+--- ppt/slides/slide11.xml ---
+DBMS Buffers DBMS will maintain  several main memory data buffers  in the database cache. Each buffer typically holds the contents of one database disk block, which contains some of the database items being processed.  When  buffers are occupied , a  buffer replacement policy  is used  to choose  which buffer will be replaced Example policy: least recently used Slide 20-  11
+
+--- ppt/slides/slide12.xml ---
+Concurrency Control Transactions submitted by various users may execute concurrently Access  and  update  the same database items Some form of  concurrency control  is needed to  prevent/avoid   some problems occurrence.  The Lost Update Problem Occurs when  two transactions  that  access the same database items  have  operations interleaved Results in incorrect value of some database items Slide 20-  12
+
+--- ppt/slides/slide13.xml ---
+The Lost Update Problem Slide 20- 13 Figure 20.3  Some problems that occur when concurrent execution is uncontrolled  (a) The lost update problem
+
+--- ppt/slides/slide14.xml ---
+The Temporary Update Problem Slide 20- 14 Figure 20.3  Some problems that occur when concurrent execution is uncontrolled  (b) The temporary update problem
+
+--- ppt/slides/slide15.xml ---
+The Incorrect Summary Problem Slide 20- 15 Figure 20.3  Some problems that occur when concurrent execution is uncontrolled  (c) The incorrect summary problem
+
+--- ppt/slides/slide16.xml ---
+The Unrepeatable Read Problem Transaction  T  reads the same item twice Value is changed by another transaction  T  between the two reads T  receives different values for the two reads of the same item   Slide 20-  16
+
+--- ppt/slides/slide17.xml ---
+Why Recovery is Needed Transaction has  two states Committed transaction Effect recorded permanently in the database Aborted transaction Does not affect the database System  must keep sufficient information  to recover quickly from the failure Disk failure  or  other catastrophes  have long recovery times Slide 20-  17
+
+--- ppt/slides/slide18.xml ---
+Why Recovery is Needed (cont’d.) Types of transaction failures Computer failure (system crash) Transaction or system error Local errors or exception conditions detected by the transaction Concurrency control enforcement Disk failure Physical problems or catastrophes Slide 20-  18
+
+--- ppt/slides/slide19.xml ---
+20.2 Transaction and System Concepts System  must keep track  of when each transaction starts, terminates, commits, and/or aborts BEGIN_TRANSACTION READ or WRITE END_TRANSACTION COMMIT_TRANSACTION ROLLBACK (or ABORT) Slide 20-  19
+
+--- ppt/slides/slide20.xml ---
+Transaction and System Concepts (cont’d.) Slide 20- 20
+
+--- ppt/slides/slide21.xml ---
+The System Log System log  keeps track  of  transaction operations Sequential,  append-only file Not affected  by failure  except disk  or  catastrophic failure Log buffer Main memory buffer When full, appended to end of log file on disk Log file  is backed up  periodically Undo  and  redo  operations  based on log  possible Slide 20-  21
+
+--- ppt/slides/slide22.xml ---
+Commit Point of a Transaction Occurs when all operations that access the database have completed successfully and effect of operations recorded in the log Transaction writes a commit record into the log If system failure occurs, can  search for transactions  with recorded start_transaction  but   no commit record Force-writing the log buffer to disk Writing log buffer to disk before transaction reaches commit point Slide 20-  22
+
+--- ppt/slides/slide23.xml ---
+DBMS-Specific Buffer Replacement Policies Page replacement policy Selects particular buffers to be replaced when all are full Domain separation (DS) method  Each domain handles one type of disk pages Index pages Data file pages Log file pages Number of available buffers for each domain is predetermined Slide 20-  23
+
+--- ppt/slides/slide24.xml ---
+DBMS-Specific Buffer Replacement Policies (cont’d.) Hot set  method Useful in queries that scan a set of pages repeatedly Does not replace  the set in the buffers  until  processing is completed The  DBMIN  method Predetermines the pattern of page references for each algorithm for a particular type of database operation Calculates locality set using query locality set model (QLSM) Slide 20-  24
+
+--- ppt/slides/slide25.xml ---
+20.3 Desirable Properties of Transactions ACID properties Atomicity Transaction performed in its entirety or not at all Consistency preservation Takes database from one consistent state to another Isolation Not interfered with by other transactions Durability or permanency Changes must persist in the database Slide 20-  25
+
+--- ppt/slides/slide26.xml ---
+Desirable Properties of Transactions (cont’d.) Levels of isolation Level 0:  isolation does not overwrite the dirty reads ,  of higher-level transactions dirty read means  reading uncommitted modifications , Level    1:  isolation has no lost updates Level   2:  isolation has no lost updates and no dirty reads Level 3  (true isolation) isolation has repeatable reads in addition to level 2 properties Snapshot  isolation include several practical concurrency control methods such as  row versioning  Slide 20-  26
+
+--- ppt/slides/slide27.xml ---
+20.4 Characterizing Schedules Based on Recoverability Schedule ( or  history) Order of  execution of operations  from all  transactions. Operations  from different transactions  can be  interleaved  in the schedule Total ordering  of operations in a schedule For any two (conflicting) operations in the schedule, one must occur before the other. Keep the transaction’s ordering. Slide 20-  27
+
+--- ppt/slides/slide28.xml ---
+Characterizing Schedules Based on Recoverability (cont’d.) Two conflicting operations in a schedule Operations belong to different transactions Operations access the same item X At least one of the operations is a write_item(X) Two operations conflict if  changing their order  results   in a different outcome Read-write conflict Write-write conflict Slide 20-  28
+
+--- ppt/slides/slide29.xml ---
+Characterizing Schedules Based on Recoverability (cont’d.) (1) Recoverable schedules Recovery is possible Non-recoverable  schedules  should not be permitted  by the DBMS No committed transaction  ever   needs to be rolled back Cascading rollback  may occur in some recoverable schedules Uncommitted transaction may need to be rolled back Slide 20-  29
+
+--- ppt/slides/slide30.xml ---
+Characterizing Schedules Based on Recoverability (cont’d.) (2)  Cascadeless  schedule Avoids cascading rollback if every transaction in the schedule reads only items that were written by committed transactions.  (3) Strict schedule Transactions can  neither  read  nor  write an item X  until  the last transaction that wrote X has committed or aborted Simpler recovery process Restore the before image Slide 20-  30
+
+--- ppt/slides/slide31.xml ---
+20.5 Characterizing Schedules Based on Serializability Serializable schedules Always considered to be correct when concurrent transactions are executing Places simultaneous transactions in series Transaction T 1  before T 2 , or vice versa Slide 20-  31
+
+--- ppt/slides/slide32.xml ---
+Slide 20- 32 X=90 Y=90 N=3 M=2
+
+--- ppt/slides/slide33.xml ---
+Characterizing Schedules Based on Serializability (cont’d.) Problem with serial schedules Limit concurrency  by prohibiting interleaving of operations Unacceptable in practice Solution : determine which schedules are equivalent to a serial schedule and allow those to occur Serializable schedule of   transactions Equivalent to some serial schedule of same   transactions   Slide 20-  33
+
+--- ppt/slides/slide34.xml ---
+Characterizing Schedules Based on Serializability (cont’d.) Result equivalent schedules Produce  the same final state  of the database May be accidental Cannot be used alone to define equivalence of schedules Slide 20-  34
+
+--- ppt/slides/slide35.xml ---
+Characterizing Schedules Based on Serializability (cont’d.) Conflict equivalence Relative order of any two conflicting operations is the same in both schedules Serializable schedules Schedule   is serializable if  it is conflict equivalent  to some serial schedule  .   Slide 20-  35
+
+--- ppt/slides/slide36.xml ---
+Characterizing Schedules Based on Serializability (cont’d.) Testing for serializability of a schedule Slide 20-  36
+
+--- ppt/slides/slide37.xml ---
+Characterizing Schedules Based on Serializability (cont’d.) Slide 20- 37
+
+--- ppt/slides/slide38.xml ---
+Figure  20.8 Page 769-770 Slide 16- 38
+
+--- ppt/slides/slide39.xml ---
+How Serializability is Used for Concurrency Control Being serializable  is different  from being serial Serializable schedule  gives benefit  of concurrent execution Without giving up any correctness Difficult   to test  for serializability in practice Factors such as:  system load, time of transaction submission, and process priority affect ordering of operations DBMS enforces protocols Set of rules to ensure serializability Slide 20-  39
+
+--- ppt/slides/slide40.xml ---
+View Equivalence and View Serializability View equivalence of two schedules As long as each  read operation  of a transaction  reads the result of the same write operation  in both schedules, the  write operations  of each transaction  must produce  the same results Read operations said to see the same view in both schedules View serializable schedule  View equivalent to a serial schedule Slide 20-  40
+
+--- ppt/slides/slide41.xml ---
+View Equivalence and View Serializability (cont’d.) Conflict serializability  similar to  view serializability  if  constrained write assumption (no blind writes) applies Unconstrained write assumption Value  written by an operation can be  independent of  its  old value Debit-credit transactions Less-stringent conditions than conflict serializability or view serializability Slide 20-  41
+
+--- ppt/slides/slide42.xml ---
+20.6 Transaction Support in SQL No explicit Begin_Transaction statement Every transaction must have an explicit end statement COMMIT ROLLBACK Access mode is READ ONLY or READ WRITE Diagnostic area size option Integer value indicating number of conditions held simultaneously in the diagnostic area Slide 20-  42
+
+--- ppt/slides/slide43.xml ---
+Transaction Support in SQL (cont’d.) Isolation level option Dirty read Nonrepeatable read Phantoms Slide 20-  43 Table 20.1  Possible violations based on isolation levels as defined in SQL
+
+--- ppt/slides/slide44.xml ---
+Transaction Support in SQL (cont’d.) Snapshot isolation Used in some commercial DBMSs Transaction sees data items that it reads based on the committed values of the items in the database snapshot when transaction starts Ensures phantom record problem will not occur Slide 20-  44
+
+--- ppt/slides/slide45.xml ---
+20.7 Summary Single and multiuser database transactions Uncontrolled execution of concurrent transactions System log Failure recovery Committed transaction Schedule (history) defines execution sequence Schedule recoverability Schedule equivalence Serializability of schedules Slide 20-  45

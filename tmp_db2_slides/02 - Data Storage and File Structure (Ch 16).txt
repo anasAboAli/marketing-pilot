@@ -1,0 +1,231 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 02 Disk Storage, Basic File Structures, Hashing, and Modern Storage Architectures Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 16 Disk Storage, Basic File Structures, Hashing, and Modern Storage Architectures Copyright © 2016 Ramez Elmasri and Shamkant B.  Navathe Modified by:  Iyad   Alshami
+
+--- ppt/slides/slide3.xml ---
+16.1 Introduction Databases typically stored on  magnetic disks Accessed using  physical database file structures Storage hierarchy Primary storage cache memory (static memory), CPU main memory (DRAM)   It  provides fast access but is limited storage capacity.  Secondary storage Magnetic disks Flash memory which is nonvolatile and has moderate size  Solid-State Drives (SSD) is a flash memory used as disk drive Tertiary storage Removable media such as  Optical disks (CD-ROMs, DVDs) and Tapes. Slide 16-  3
+
+--- ppt/slides/slide4.xml ---
+Memory Hierarchies and Storage Devices Slide 16-  4
+
+--- ppt/slides/slide5.xml ---
+Storage Types and Characteristics Slide 16- 5 Table 16.1 Types of Storage with Capacity, Access Time, Max Bandwidth (Transfer Speed), and Commodity Cost
+
+--- ppt/slides/slide6.xml ---
+Storage Organization of Databases Persistent data Most databases Transient data Exists  only  during  program execution File organization Determines  how records  are  physically placed on the disk Determines  how records are accessed Slide 16-  6
+
+--- ppt/slides/slide7.xml ---
+Storage Organization of Databases Most databases are stored permanently on magnetic disk for the following reasons:  Generally, databases are  too large to fit  entirely in  main memory .  The circumstances that cause  permanent loss  of stored data arise  less frequently for secondary storage  than for primary storage.  secondary storage devices—as  nonvolatile storage , whereas main memory is often called  volatile storage .  The  cost of storage  per unit of data is an order of magnitude  less for disk secondary storage  than for primary storage.  Slide 16-  7
+
+--- ppt/slides/slide8.xml ---
+16.2 Secondary Storage Devices Hard disk drive (HDD) Bit  is the  most basic unit of data  Grouped into  bytes  ( characters) Disk  capacity  measures  storage size The number of bytes that can be stored on disk Disks may be  single  or  double-sided Concentric circles called  tracks Tracks divided into blocks or  sectors Disk packs Cylinder Slide 16-  8
+
+--- ppt/slides/slide9.xml ---
+16.2 Secondary Storage Devices Hard disk drive (HDD) Slide 16-  9
+
+--- ppt/slides/slide10.xml ---
+Single-Sided Disk and Disk Pack Slide 16- 10 Figure 16.1  (a)  A single-sided disk with read/write hardware                         (b)  A disk pack with read/write hardware
+
+--- ppt/slides/slide11.xml ---
+Sectors on a Disk Slide 16- 11 Figure 16.2 Different sector organizations on disk  	 (a)  Sectors subtending a fixed angle  	 (b)  Sectors maintaining a uniform recording density
+
+--- ppt/slides/slide12.xml ---
+Secondary Storage Devices (cont’d.) The  division of a track  into sectors  is hard-coded  on the disk surface and  cannot  be changed.  The division of a track into  equal-sized  disk  blocks  (or pages) is set by the operating system during  disk formatting  (or initialization).  Typically  sector size  range from  512  to  8192  bytes.  Slide 16-  12
+
+--- ppt/slides/slide13.xml ---
+Secondary Storage Devices (cont’d.) Formatting Divides tracks into  equal-sized  disk blocks Blocks separated by  interblock  gaps Data transfer in units of disk blocks Hardware address supplied to disk I/O hardware Buffer Used in read and write operations Read/write head Hardware mechanism for read and write operations Slide 16-  13
+
+--- ppt/slides/slide14.xml ---
+Secondary Storage Devices (cont’d.) Disk   controller : Interfaces disk to computer system accepts  high-level commands  to read or write a sector/block  initiates actions  such as moving the disk arm to the right track and actually reading or writing the data Computes  and  attaches checksums  to each sector to verify that data is read back correctly If data is corrupted, with very high probability stored checksum won’t match recomputed checksum Ensures  successful writing  by reading back sector after writing it Performs  remapping  of  bad sectors Slide 16-  14
+
+--- ppt/slides/slide15.xml ---
+Secondary Storage Devices (cont’d.) Multiple disks  connected  to a computer system  through a controller Controllers functionality ( checksum ,  bad sector remapping ) often carried out by  individual disks ;  reduces load  on controller Slide 16- 13
+
+--- ppt/slides/slide16.xml ---
+Secondary Storage Devices (cont’d.) Disk controller Standard interfaces SCSI  ( s mall  c omputer  s ystem  i nterface) SATA  (serial ATA) Serial PC/AT attachment transfer speeds from  1.5 to 6  Gbps   SAS  (serial attached SCSI)  In terms of IOPs (input/output operations) per second as a price to performance index,  SAS  is considered  superior  to  SATA .  Slide 16-  16
+
+--- ppt/slides/slide17.xml ---
+Performance Measures of Disks (1)Access time  –  the time it takes from when a read or write request is issued to when data transfer begins.  Access time Consists of Seek time  – time it takes  to   reposition   the arm  over the correct track.    Average seek time  is  1/2 the worst case  seek time. Would be 1/3 if all tracks had the same number of sectors, and we ignore the time to start and stop arm movement 4 to 10 milliseconds  on typical disks Rotational latency  – time it takes for the sector to be accessed to appear under the head.  Average latency is 1/2 of the worst case latency. 4 to 11 milliseconds on typical disks (5400 to 15000  r.p.m .) Slide 16- 15
+
+--- ppt/slides/slide18.xml ---
+Performance Measures of Disks (2)Data-transfer rate  – the rate at which data can be retrieved from or stored to the disk. 25 to 100 MB per second max rate lower for inner tracks Multiple disks may share a controller, so rate that controller can handle is also important E.g.  SATA: 150 MB/s SATA-II (3Gb): 300 MB/s Ultra 320 SCSI: 320 MB/s SAS: 3 to 6 Gb/s (380 to 770 MB/s) Fiber Channel (FC2Gb or 4Gb): 256 to 512 MB/s Slide 16- 16
+
+--- ppt/slides/slide19.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering Proper organization of data on disk Reading data ahead of request Proper scheduling of I/O requests Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes Slide 16-  19
+
+--- ppt/slides/slide20.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering to  overcome  the  speeds incompatibility  between a CPU and the electromechanical device such as an HDD. Proper organization of data on disk Reading data ahead of request Proper scheduling of I/O requests Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes Slide 16-  20
+
+--- ppt/slides/slide21.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering Proper organization of data on disk keep  related data  on  contiguous blocks  (cylinders)  to avoid   unnecessary movement  of the read/write arm and  related seek times .  Reading data ahead of request Proper scheduling of I/O requests Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes Slide 16-  21
+
+--- ppt/slides/slide22.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering Proper organization of data on disk Reading data ahead of request whenever a block is read into the buffer, blocks from the rest of the track can also be read even though they may not have been requested yet. This  reduce seek time Proper scheduling of I/O requests Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes Slide 16-  22
+
+--- ppt/slides/slide23.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering Proper organization of data on disk Reading data ahead of request Proper scheduling of I/O requests arm  moves only in one direction  and picks up the blocks along its movement.  popular algorithm is called the  elevator algorithm Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes Slide 16-  23
+
+--- ppt/slides/slide24.xml ---
+Secondary Storage Devices (cont’d.) Techniques  for efficient data access Data buffering Proper organization of data on disk Reading data ahead of request Proper scheduling of I/O requests Use of log disks to temporarily hold writes A single disk may be assigned to just one function called  logging of writes . All blocks to be written can go to that disk sequentially, thus eliminating any seek time.  Use of SSDs or flash memory for recovery purposes Slide 16-  24
+
+--- ppt/slides/slide25.xml ---
+Secondary Storage Devices (cont’d.) Techniques   for efficient data access Data buffering Proper organization of data on disk Reading data ahead of request Proper scheduling of I/O requests Use of log disks to temporarily hold writes Use of SSDs or flash memory for recovery purposes In applications where  updates  occur  with high frequency , updates  can be lost from main memory  if  system crashes . A preventive measure would be  to increase the speed of updates/writes  to disk.  One possible approach involves writing the updates to a nonvolatile SSD buffer, which may be a flash memory or battery-operated DRAM,  Slide 16-  25
+
+--- ppt/slides/slide26.xml ---
+Solid State Device Storage Sometimes  called  flash storage Main component:  controller Set of  interconnected   flash memory  cards No moving parts Data  less likely  to  be fragmented More  costly than  HDDs DRAM-based SSDs available Faster access times compared with flash Slide 16-  26 *** The recent trend is to  use flash memories  as an  intermediate layer  between  main memory  and  secondary   rotating storage  in the form of magnetic disks (HDDs). 
+
+--- ppt/slides/slide27.xml ---
+Solid State Device Storage Slide 16-  27
+
+--- ppt/slides/slide28.xml ---
+Magnetic Tape Storage Devices Sequential access  Must scan preceding blocks Tape is mounted and scanned until required block is under read/write head Important functions Backup Archive Slide 16-  28
+
+--- ppt/slides/slide29.xml ---
+16.3 Buffering of Blocks Buffering most useful when processes can run concurrently in parallel When several blocks  need  to be transferred from disk to main memory   and   all the block addresses are known , several buffers  can be reserved in main memory  to speed up the transfer .  Slide 16-  29
+
+--- ppt/slides/slide30.xml ---
+Buffering of Blocks (cont’d.) Double buffering  can be used to read continuous stream of blocks. Double buffering  permits   continuous reading/writing  of  data on consecutive disk blocks , which  eliminates   the seek time  and rotational delay for all but the first block transfer.  Moreover,  data is kept ready for processing , thus reducing the waiting time in the programs.  Slide 16-  30
+
+--- ppt/slides/slide31.xml ---
+Buffer Management and Replacement Strategies Buffer manager  is a software component of a DBMS  that  responds  to requests   for data  and  decides  what buffer to use  and  what pages to replace in the buffer  to accommodate the newly requested blocks. The buffer manager views  the available main memory storage  as a  buffer pool , which has a collection of pages.  The  size of the shared  buffer pool is typically  a parameter  for the DBMS  controlled by DBAs . Slide 16-  31
+
+--- ppt/slides/slide32.xml ---
+Buffer Management and Replacement Strategies Buffer manager  allocates  buffers in  the main memory   or in  the virtual memory . If the  requested amount  of data  exceeds  available buffer space, the buffer manager must select what buffers must be emptied, as  governed  by the  buffer replacement policy  in force.  The overall goal of the buffer manager is twofold:  (1)  to maximize the probability  that the  requested page is found  in main memory, and  (2) in case of  reading a new disk block  from disk,  to find a page to replace  that will cause  the least harm in the sense  that it will not be required shortly again.  Slide 16-  32
+
+--- ppt/slides/slide33.xml ---
+Buffer Management and Replacement Strategies To enable its operation, the  buffer manager  keeps two types of  information  on hand about each page in the buffer pool:  Pin-count the  number of times  that page  has been requested , or the  number of current users  of that page.  Incrementing the pin-count is called  pinning Dirty bit which is initially  set to zero  for all pages but is  set to 1  whenever that page is updated by any application program.  Slide 16-  33
+
+--- ppt/slides/slide34.xml ---
+Buffer Management and Replacement Strategies When a certain page is requested, the buffer manager takes following actions:  it checks if the  requested page is already in a buffer  in the buffer pool; if so, it increments its  pin-count  and  releases  the page.  Slide 16-  34
+
+--- ppt/slides/slide35.xml ---
+Buffer Management and Replacement Strategies If the  page is not in the buffer pool , the buffer manager does the following:  a)  It  chooses a page for replacement , using there  placement policy , and  increments  its pin-count.   b)  If the dirty bit of the replacement page is on, the buffer manager writes that page to disk by replacing its old copy on disk. If the dirty bit is not on, this page is not modified and the buffer manager is not required to write it back to disk.  c)  It reads the requested page into the space just freed up.   d)  The main memory address of the new page is passed to the requesting application.  Slide 16-  35
+
+--- ppt/slides/slide36.xml ---
+Buffer Management and Replacement Strategies Buffer replacement strategies Least recently used (LRU) The strategy here is to throw out that page that has not been used (read or written) for the longest time.  This requires the buffer manager to  maintain a table where it records  the time every time a page in a buffer is accessed.  Clock policy First-in-first-out (FIFO) Slide 16-  36
+
+--- ppt/slides/slide37.xml ---
+Buffer Management and Replacement Strategies Buffer replacement strategies Least recently used (LRU) Clock policy It consider the used buffers as in a circle as clock and buffers flagged with 0 or 1. buffers with flag 0 is vulnerable to be replaced. When a block is read into a buffer, the flag is set to 1 and when the buffer is accessed as well. When a buffer is needed for new block, the circle will be rotated until finding buffers with flag 0, If the clock hand passes buffers with 1s, it sets them to a zero. First-in-first-out (FIFO) Slide 16-  37
+
+--- ppt/slides/slide38.xml ---
+Buffer Management and Replacement Strategies Buffer replacement strategies Least recently used (LRU) Clock policy First-in-first-out (FIFO) when a buffer is required, the one that has been occupied the longest by a page is used for replacement. Under this policy, the manager notes the time each page gets loaded into a buffer; but it does not have to keep track of the time pages are accessed.  Slide 16-  38
+
+--- ppt/slides/slide39.xml ---
+16.4 Placing File Records on Disk A  file,  in database, is a  sequence  of records .  Record : collection of  related data values  or items Values correspond to record field. Data types Numeric String Boolean Date/time Binary large objects (BLOBs) Unstructured objects  and it  is  typically stored separately from its record  in a pool of disk blocks and a  pointer to the BLOB is included in the record . Slide 16-  39
+
+--- ppt/slides/slide40.xml ---
+16.4 Placing File Records on Disk In many cases, all records in a file are of the same record type.  If every record in the file has exactly the same size (in bytes), the file is said to be made up of  fixed-length records .  If different records in the file have different sizes, the file is said to be made up of  variable-length records. Slide 16-  40
+
+--- ppt/slides/slide41.xml ---
+Placing File Records on Disk (cont’d.) Reasons for variable-length records One or more fields  have variable length E.g.: Name field One or more  fields are repeating one or more of the fields may have multiple values for individual records. E.g.: Hobbies field One or more  fields are optional Fields with  null  values. File contains records of different types Slide 16-  41
+
+--- ppt/slides/slide42.xml ---
+Placing File Records on Disk (cont’d.) Slide 16-  42
+
+--- ppt/slides/slide43.xml ---
+Record Blocking and Spanned Versus Unspanned Records File records  allocated  to  disk blocks because a block is the  unit of data transfer  between disk and memory. When the  block size  is  larger  than the  record size , each block will contain numerous records.  some files may have unusually large records that cannot fit in one block.  Slide 16-  43
+
+--- ppt/slides/slide44.xml ---
+Record Blocking and Spanned Versus Unspanned Records Spanned records Larger  than a single block Pointer  at end of first block  points to block containing remainder of record Unspanned Records  not allowed to cross  block boundaries Slide 16-  44
+
+--- ppt/slides/slide45.xml ---
+Record Blocking and Spanned Versus Unspanned Records (cont’d.) Blocking factor Average number of records per block for the file. Blocking factor ( fbr )  is the number of records, fixed-length records, that can be stored in one block. where   is the block size and   is the record size.   Slide 16- 45
+
+--- ppt/slides/slide46.xml ---
+Record Blocking and Spanned Versus Unspanned Records (cont’d.) Blocking factor Average number of records per block for the file Slide 16- 46 Figure 16.6 Types of record organization (a) Unspanned (b) Spanned
+
+--- ppt/slides/slide47.xml ---
+Record Blocking and Spanned Versus Unspanned Records (cont’d.) Allocating file blocks on disk Contiguous allocation This makes  reading the whole file very fast  using double buffering, but  it makes expanding the file difficult.  Linked allocation This makes  it easy to expand the file , but  makes it slow to read the whole file.  Clusters Allocation*:  linked allocation for  consecutive disk blocks Indexed allocation One or more index blocks contain pointers to the actual file blocks. Slide 16-  47
+
+--- ppt/slides/slide48.xml ---
+Record Blocking and Spanned Versus Unspanned Records (cont’d.) File header (file descriptor) Contains file information needed by system programs that access the file records Disk addresses Format descriptions field  lengths  and  the order of fields  within a record  field  type  codes,  separator characters , and record type codes for variable-length records.  Slide 16-  48
+
+--- ppt/slides/slide49.xml ---
+Placing File Records on Disk To search  for a record  on disk,  one or more blocks  are copied into main memory buffers.  Then  search for the desired record within  the buffers , using the information in the  file header .  If the  address of the block  that contains the desired record  is not known , the search programs must do a  linear search  through the file blocks.  Each file block is copied into a buffer and searched until the record is located or all the file blocks have been searched unsuccessfully.  This can be  very time-consuming  for a large file.   The  goal  of a  good file organization  is to  avoid linear search  or full scan of the file and to locate the block that contains a desired record with a minimal number of block transfers.  Slide 16-  49
+
+--- ppt/slides/slide50.xml ---
+16.5 Operations on Files Retrieval operations No change to file data Update operations File change by insertion, deletion, or modification Records selected  based on selection/filtering condition Slide 16-  50
+
+--- ppt/slides/slide51.xml ---
+Operations on Files (cont’d.) Examples of operations for accessing file records Open Reset Find (Locate) FindNext Read Insert Delete Close Scan Find/ FindNext  and Read operations streamlining Slide 16-  51
+
+--- ppt/slides/slide52.xml ---
+Operations on Files (cont’d.) Open . Prepares the file for reading or writing. Allocates appropriate buffers (typically at least two) to hold file blocks from disk, and retrieves the file header. Sets the file pointer to the beginning of the file.  Reset . Sets the file pointer of an open file to the beginning of the file.  Find  (or Locate). Searches for the first record that satisfies a search condition. Transfers the block containing that record into a main memory buffer (if it is not already there). The file pointer points to the record in the buffer and it becomes the current record. Sometimes, different verbs are used to indicate whether the located record is to be retrieved or updated.  Read  (or Get). Copies the current record from the buffer to a program variable in the user program. This command may also advance the current record pointer to the next record in the file, which may necessitate reading the next file block from disk.  FindNext . Searches for the next record in the file that satisfies the search condition. Transfers the block containing that record into a main memory buffer (if it is not already there). The record is located in the buffer and becomes the current record.  Delete . Deletes the current record and (eventually) updates the file on disk to reflect the deletion.  Modify . Modifies some field values for the current record and (eventually) updates the file on disk to reflect the modification.  Insert . Inserts a new record in the file by locating the block where the record is to be inserted, transferring that block into a main memory buffer (if it is not already there), writing the record into the buffer, and (eventually) writing the buffer to disk to reflect the insertion.  Close . Completes the file access by releasing the buffers and performing any other needed cleanup operations.  Slide 16-  52
+
+--- ppt/slides/slide53.xml ---
+16.6 Files of Unordered Records (Heap Files) Heap (or pile) file Records placed in file in order of insertion Inserting a new record is  very efficient Searching for a record requires  linear   search Deletion techniques Rewrite the block Use deletion marker Slide 16-  53
+
+--- ppt/slides/slide54.xml ---
+16.7 Files of Ordered Records (Sorted Files) Ordered (sequential) file Records sorted by  ordering field Called  ordering key  if ordering field is a key field Advantages Reading records in order of ordering key value is  extremely efficient Finding next record Binary search  technique Slide 16-  54
+
+--- ppt/slides/slide55.xml ---
+Access Times for Various File Organizations Slide 16- 55 Table 16.3 Average access times for a file of  b  blocks under basic file organizations
+
+--- ppt/slides/slide56.xml ---
+16.8 Hashing Techniques Hash function (randomizing function) Applied to  hash field value  of a record Yields address  of the disk block of stored record Organization called hash file Search condition  is equality condition  on the hash field Hash field  typically  key field Hashing also internal search structure Used when group of records accessed exclusively by one field value Slide 16-  56
+
+--- ppt/slides/slide57.xml ---
+Hashing Techniques (cont’d.) Internal hashing Hash table Collision Hash field value for inserted record hashes to address  already containing a different  record Collision resolution Open addressing Chaining Multiple hashing Slide 16-  57
+
+--- ppt/slides/slide58.xml ---
+Hashing Techniques (cont’d.) Slide 16-  58
+
+--- ppt/slides/slide59.xml ---
+Hashing Techniques (cont’d.) External hashing for disk files Target  address space  made of  buckets Bucket:  one disk block  or  contiguous blocks Hashing function maps a key into relative bucket Table in  file header  converts  bucket number  to  disk block address Collision problem less severe with buckets Static hashing Fixed number of buckets allocated Slide 16-  59
+
+--- ppt/slides/slide60.xml ---
+Hashing Techniques (cont’d.) Slide 16-  60
+
+--- ppt/slides/slide61.xml ---
+Hashing Techniques (cont’d.) Slide 16-  61
+
+--- ppt/slides/slide62.xml ---
+Hashing Techniques (cont’d.) Hashing techniques that  allow dynamic file expansion : Extendible hashing File  performance does not degrade  as file grows Dynamic hashing Maintains  tree-structured  directory Linear hashing Allows  hash file to expand and shrink buckets  without needing a directory Slide 16-  62
+
+--- ppt/slides/slide63.xml ---
+Hashing Techniques (cont’d.) Slide 16-  63
+
+--- ppt/slides/slide64.xml ---
+16.9 Other Primary File Organizations Files of mixed records Relationships implemented by logical field references Physical clustering B-tree data structure Bayer tree Column-based data storage Slide 16-  64
+
+--- ppt/slides/slide65.xml ---
+16.10 Parallelizing Disk Access Using RAID Technology Redundant arrays of independent disks (RAID) Goal:  improve  disk  speed  and  access time Set of RAID architectures (0 through 6) Data striping Bit-level  striping Block-level  striping Improving Performance with RAID Data striping achieves higher transfer rates Slide 16-  65
+
+--- ppt/slides/slide66.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) Improving reliability with RAID Redundancy techniques:  mirroring  and  shadowing RAID organizations and levels Level 0 Data striping,  no redundant  data Spits data  evenly  across two or more disks Slide 16-  66
+
+--- ppt/slides/slide67.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) Improving reliability with RAID Redundancy techniques:  mirroring  and  shadowing RAID organizations and levels Level 1 Uses  mirrored   disks Slide 16-  67
+
+--- ppt/slides/slide68.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) RAID organizations and levels (cont’d.) Level 2 Hamming codes  for memory-style redundancy Error detection  and  correction Slide 16-  68
+
+--- ppt/slides/slide69.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) RAID organizations and levels (cont’d.) Level 3 Single parity  disk relying on disk controller Slide 16-  69
+
+--- ppt/slides/slide70.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) RAID organizations and levels (cont’d. Levels 4 and 5 Block-level  data  striping Data  distribution across all disks  (level 5) Slide 16-  70
+
+--- ppt/slides/slide71.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) RAID organizations and levels (cont’d.) Level 6 Applies  P+Q redundancy scheme Protects  against up to two disk failures  by using just two redundant disks Slide 16-  71
+
+--- ppt/slides/slide72.xml ---
+Parallelizing Disk Access Using RAID Technology (cont’d.) Rebuilding easiest for RAID level 1 Other levels  require reconstruction  by reading multiple disks RAID levels  3  and  5  preferred  for large volume storage Slide 16-  72
+
+--- ppt/slides/slide73.xml ---
+RAID Levels Slide 16- 73 Figure 16.14 Some popular levels of RAID  RAID level 1: Mirroring of data on two disks  RAID level 5: Striping of data with distributed parity across four disks
+
+--- ppt/slides/slide74.xml ---
+16.11 Modern Storage Architectures Storage area networks (SANs) Online storage peripherals configured as nodes on high-speed network Network-attached storage (NAS) Servers used for  file sharing High degree of scalability, reliability, flexibility, performance iSCSI Clients send SCSI commands to SCSI storage devices on remote channels Slide 16-  74
+
+--- ppt/slides/slide75.xml ---
+Modern Storage Architectures (cont’d.) Fibre Channel over IP (FCIP) Fibre Channel control codes and data translated into IP packets Transmitted between geographically distant Fibre Channel SANs Fibre Channel over Ethernet (FCoE) Similar to iSCSI without the IP Slide 16-  75
+
+--- ppt/slides/slide76.xml ---
+Modern Storage Architectures (cont’d.) Automated storage  tiering Automatically moves data between different storage types depending on need Frequently-used data moved to solid-state drives Object-based storage Data managed in form of objects rather than files made of blocks Objects carry metadata and global identifier Ideally suited for scalable storage of unstructured data Slide 16-  76
+
+--- ppt/slides/slide77.xml ---
+16.12 Summary Magnetic disks Accessing a disk block is expensive Commands for accessing file records File organizations: unordered, ordered, hashed RAID Modern storage trends Slide 16-  77

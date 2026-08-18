@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "محمد أحمد",
+    "company": "شركة الريادة العقارية",
+    "phone": "0501234567",
+    "source": "Google Ads",
+    "value": "12,000 ر.س",
+    "status": "جديد"
+  },
+  {
+    "id": 2,
+    "name": "سارة خالد",
+    "company": "عيادات النخبة",
+    "phone": "0559876543",
+    "source": "Meta Ads",
+    "value": "8,500 ر.س",
+    "status": "تم التواصل"
+  },
+  {
+    "id": 3,
+    "name": "f",
+    "company": "f",
+    "phone": "f",
+    "source": "Google Ads",
+    "value": "0 ر.س",
+    "status": "جديد"
+  }
+]

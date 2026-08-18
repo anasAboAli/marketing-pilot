@@ -1,0 +1,174 @@
+
+--- ppt/slides/slide1.xml ---
+1 COVID-19  still  exist Keep your face mask  ON Use  hand sanitizer as you can
+
+--- ppt/slides/slide2.xml ---
+Chapter  01  Procedural Programming for Database Database Management Systems (II) SICT  2201 2 nd      Semester 2021/2022 2
+
+--- ppt/slides/slide3.xml ---
+SQL Procedural programming  SQL Procedural programming is a language  that extent  the Structured Query Language (SQL). PL/SQL @ Oracle brand   The purpose of procedural programming  is to combine database language  and  procedural programming  language.  As any programming language the SQL procedural programming has: Variables and datatype Control statements Procedures and Functions Stored in database server 3
+
+--- ppt/slides/slide4.xml ---
+Comment Syntax From a  /*  sequence to the following  */  sequence. From a “ # ” character to the end of the line.  From a “ --  ” sequence to the end of the line.  In MySQL, the “-- ” (double-dash) comment style requires the  second dash  to be  followed by  at least one  whitespace -- Programmer: John Smith
+
+--- ppt/slides/slide5.xml ---
+Variable Declaration Variable naming rules:   Identifiers can consist of  any alphanumeric  characters, plus the characters ' _ ' and ' $ '.   Identifiers can start with any character that is legal in an identifier, including a digit.  However, an identifier cannot consist entirely of digits. Data types: A variable can have any MySQL data types. For example Character: CHAR(n), VARCHAR(n) Number: INT, SMALLINT, DECIMAL( i,j ), DOUBLE  Date: DATE, TIME, DATETIME BOOLEAN … etc declare  variable_name   datatype(size)  default  default_value ;
+
+--- ppt/slides/slide6.xml ---
+Variable Declaration
+
+--- ppt/slides/slide7.xml ---
+Variable Declaration - Examples DECLARE  x, y  INT  DEFAULT 0; DECLARE  today  TIMESTAMP  DEFAULT CURRENT_DATE;  DECLARE   ename   VARCHAR (50) ; SET   ename  = "Ahmad" DECLARE   no_more_rows  BOOLEAN; SET   no_more_rows  = TRUE; 
+
+--- ppt/slides/slide8.xml ---
+Control Statements IF … THEN CASE … WHILE LOOP WHILE … DO 8
+
+--- ppt/slides/slide9.xml ---
+Control Statements IF… THEN 9 ELSEIF   IF  condition  THEN     -- execution code; ELSEIF  condition  THEN     -- execution code; ELSE     -- execution code; END IF; IF IF  condition  THEN    -- execution code; END IF; ELSE   IF  condition  THEN     -- execution code; ELSE     -- execution code; END IF;
+
+--- ppt/slides/slide10.xml ---
+Control Statements IF… THEN 10     DECLARE  grade  INT ;     DECLARE  level  CHAR(1) ;      SET  grade = 87;         IF  grade >=90 THEN         SET  level = "A";      ELSEIF  grade >=80 THEN         SET  level = "B";     ELSEIF  grade >=70 THEN         SET  level = "C";     ELSEIF  grade >=60 THEN        SET  level = "D";      ELSE         SET  level = "F";      END IF ;
+
+--- ppt/slides/slide11.xml ---
+Control Statements IF(exp1, exp2, exp3) If  exp1  is  TRUE ,  neither  NULL  nor  "0" zero, exp2 will be returned  otherwise  exp3 will be returned. Examples: IF( TRUE , 5, 7)  # return 5 IF( 1=1  , 5, 7)  # return 5 IF( NULL , 5, 7)  # return 7 11
+
+--- ppt/slides/slide12.xml ---
+Control Statements IFNULL(exp1, exp2) If  exp1  is  NULL , then IFNULL  returns exp2   otherwise  it returns  exp1 .  Examples: IFNULL( NULL , 0)  # return 0 IFNULL(10, 0)    # return 10 SELECT  bsalary  + IFNULL( comm , 0) as "Salary"  FROM employees ; # bsalary  and  comm  are attributes in the employees table and  comm  can be null. 12
+
+--- ppt/slides/slide13.xml ---
+Control Statements CASE …  WHEN  – Simple CASE CASE  expression  …  WHEN  value  THEN 13 DECLARE  grade  INT ; DECLARE  level  CHAR(1) ; SET  grade = 87;    CASE  grade         WHEN  90 THEN         SET  level = "A";      WHEN  80 THEN         SET  level = "B";     WHEN  70 THEN         SET  level = "C";     WHEN  60 THEN        SET  level = "D";      ELSE         SET  level = "F"; END CASE ;
+
+--- ppt/slides/slide14.xml ---
+Control Statements CASE …  WHEN  – Search CASE  CASE …  WHEN  condition  THEN 14 DECLARE  grade  INT ; DECLARE  level  CHAR(1) ; SET  grade = 87;    CASE     WHEN   grade >= 90  THEN         SET  level = "A";      WHEN   grade >= 80  and grade < 90   THEN         SET  level = "B";     WHEN   grade >= 70  and grade < 80  THEN         SET  level = "C";     WHEN   grade >= 60  and grade < 70  THEN        SET  level = "D";      ELSE         SET  level = "F"; END CASE ;
+
+--- ppt/slides/slide15.xml ---
+Control Statements IF or CASE ?? For the most developers, choosing between IF and CASE is just a matter of personal preference. However, when you decide to use IF or CASE,  you should  take the following points into the consideration : A simple CASE statement is  more readable  than the IF statement when you  compare a single expression  against a range of unique values.  In addition, the simple CASE statement is more efficient than the IF statement. When you  check complex expressions  based on multiple values, the  IF statement is easier  to understand. If you choose to use the CASE statement, you have to  make   sure that at least one of the CASE condition is matched .  Otherwise, you need to define an  error handler  to catch the error. 15
+
+--- ppt/slides/slide16.xml ---
+Control Statements LOOP The LOOP statement allows us to execute one or more statements repeatedly. Typically, you terminate the loop when a condition is satisfied by using the  LEAVE  statement. 16 DECLARE  sum, count  INT ; SET  sum = 0; SET  count = 1; sumloop : LOOP   SET  sum = sum + count; SET  count = count +1; IF  count> 10  THEN 	 LEAVE   sumloop ; END   IF ; END LOOP ;
+
+--- ppt/slides/slide17.xml ---
+Control Statements WHILE … DO The WHILE loop is a loop statement that executes a block of code repeatedly as long as a condition is true. 17 DECLARE  sum, count  INT ; SET  sum = 0; SET  count = 1; WHIEL  count <=10   DO SET  sum = sum + count; SET  count = count +1; END WHILE ;
+
+--- ppt/slides/slide18.xml ---
+Control Statements REPEAT … UNTIL The REPEAT statement executes one or more statements until a search condition is true. 18 DECLARE  sum, count  INT ; SET  sum = 0; SET  count = 1; REPEAT SET  sum = sum + count; SET  count = count +1; UNTIL  count >10 END REPEAT ;
+
+--- ppt/slides/slide19.xml ---
+Stored Procedure 19
+
+--- ppt/slides/slide20.xml ---
+Introduction Why Use Stored Programs ? The use of stored programs can lead to a  more secure database . Stored programs offer a  mechanism to abstract data access routines , which can  improve the maintainability  of code as underlying data structures evolve. Stored programs can  reduce network traffic , because the program can work on the data from within the server, rather than having to transfer the data across the network.
+
+--- ppt/slides/slide21.xml ---
+Introduction Why Use Stored Programs ?... Stored programs can be  used to implement common routines  accessible from multiple applications possibly using otherwise incompatible frameworks executed either within or from outside the database server. Database-centric logic can be isolated  in stored programs and implemented by programmers with more specialized, database experience. The use of stored programs can, under some circumstances,  improve the portability of application .
+
+--- ppt/slides/slide22.xml ---
+Stored Routines A stored routine is a set of SQL statements that can be stored in the server. MySQL supports "routines" and there are two kinds of routines: stored  procedures , or  functions  whose return values are used in other SQL statements the same way that you use pre-installed MySQL functions like  pi() .
+
+--- ppt/slides/slide23.xml ---
+MySQL  –  Stored Procedure A stored procedure  is a program  with SQL code which is  stored in the database  catalog and  can be invoked later  by a program, a trigger or even a stored procedure. MySQL supports stored procedure since version 5.0 to allow MySQL more flexible and powerful. 23
+
+--- ppt/slides/slide24.xml ---
+MySQL  –  Stored Procedure 24
+
+--- ppt/slides/slide25.xml ---
+MySQL  –  Stored Procedure  Optional Characteristics Type : Procedure/Function Language  :the default value is SQL. Deterministic  : If the procedure always returns the same results, given the same input.  The default value is NOT DETERMINISTIC. SQL   Security  : At call time, check privileges of the user.  INVOKER is the user who calls the procedure.  DEFINER is the creator of the procedure, it is the default value.  Comment  : For documentation purposes;  the default value is ""
+
+--- ppt/slides/slide26.xml ---
+MySQL  –  Stored Procedure 26 CREATE  PROCEDURE  proc_IN  ( paramList )  BEGIN   Declare   var   datatype(size)  DEFAULT  default_value ;     #Executable code   #SELECT var1 + 2 AS result;   END
+
+--- ppt/slides/slide27.xml ---
+MySQL  –  Stored Procedure  Parameters Parameter list is empty CREATE PROCEDURE proc1 ()  :  Define  input parameter  with  IN : CREATE PROCEDURE proc1 (IN  varname  DATA-TYPE)  The word IN is optional because parameters are IN (input) by default. Define  output parameter  with  OUT : CREATE PROCEDURE proc1 (OUT  varname  DATA-TYPE)  Define  input  and  output  parameters with  INOUT : CREATE PROCEDURE proc1 (INOUT  varname  DATA-TYPE)
+
+--- ppt/slides/slide28.xml ---
+MySQL  –  Stored Procedure 28 CREATE  PROCEDURE  std_gps  ( IN  sid  INT(3) )  BEGIN        SELECT AVG(grade)      FROM  Regist_tbl     WHERE  Regist_tbl.sid  =  sid ; END
+
+--- ppt/slides/slide29.xml ---
+Procedure’s parameters CREATE PROCEDURE  proc_IN  ( IN  var1 INT)   BEGIN        SELECT var1 + 2 AS result;   END CREATE PROCEDURE  proc_OUT ( OUT  var1 VARCHAR(100))   BEGIN     SET var1 = 'This is a test';    END CREATE PROCEDURE  proc_INOUT  ( IN  var1 INT, OUT  var2 INT)   BEGIN       SET var2 = var1 * 2;   END
+
+--- ppt/slides/slide30.xml ---
+MySQL  –   Stored Procedure Calling 30 Call  Procedure_name ( par_values ); Example:     Call  std_gpa (120);
+
+--- ppt/slides/slide31.xml ---
+MySQL  –  Stored Procedure Disadvantages:  Using many stored procedures, means  more memory/CPU usage .  using large number of logical operations inside stored procedures, will increase CPU usage since database server is not well-designed for logical operations. Stored procedure are  not designed for developing complex and flexible  business logic. It is  difficult to debug  stored procedures.  Only a few database management systems allow you to debug stored procedures.  Unfortunately ,  MySQL does not provide facilities for debugging  stored procedures. Developing and maintaining  stored procedures often  require  a  specialized skill  set that not all application developers possess.  This may lead to problems in both application development and maintenance phases. 31
+
+--- ppt/slides/slide32.xml ---
+Stored Functions 32
+
+--- ppt/slides/slide33.xml ---
+MySQL  –  Stored Function A stored function is a  special kind stored program  that  returns  a single value.  Stored functions can be used to  encapsulate common formulas  or  business rules  that are reusable among SQL  statements  or  stored programs. Different from a stored procedure  stored function can be used a in SQL statements  wherever  an expression is used .  This helps improve the readability and maintainability of the procedural code.  33
+
+--- ppt/slides/slide34.xml ---
+MySQL  –  Stored Function 34
+
+--- ppt/slides/slide35.xml ---
+MySQL  –  Stored Function    By default,  all parameters  are  IN  parameters.  cannot specify  IN , OUT or INOUT modifiers to the parameters. Must specify  the  data type of the return value  in the RETURNS statement. 35 CREATE  FUNCTION  function_name ( paramList ) RETURNS   datatype(size) BEGIN     Declare   var   datatype(size) ;         #Executable code     #SELECT var1 + 2 AS result;   RETURN   var ; END;
+
+--- ppt/slides/slide36.xml ---
+MySQL  –  Stored Function 36 CREATE  FUNCTION  grade_level ( grade Float ( 5,2) ) RETURNS   Varchar(10) BEGIN     Declare  level  Varchar(10) ;         IF  grade >=90 THEN          SET  level = "Excellent";        ELSEIF  grade >=80 THEN           SET  level = "Very Good"; 	   ELSEIF  grade >=70 THEN             SET  level = "Good";            ELSE               SET  level = "Accepted";            END IF ; 	RETURN  level; END;
+
+--- ppt/slides/slide37.xml ---
+MySQL  –  Stored Function Calling Calling a function within a procedure  Calling a function within a SQL statement 37 SET  var  =   grade_level ( 85 ) ;  SELECT  sid ,   grade_Level ( grade ) FROM  Regist_tbl WHERE  sem  = 17181;
+
+--- ppt/slides/slide38.xml ---
+Triggers 38
+
+--- ppt/slides/slide39.xml ---
+MySQL -  Triggers A trigger  is a program  stored in the database  and is  called automatically  when a triggering event occurs. It is associated  with a table , and that activates when a particular event occurs for the table.  Some uses for triggers are to perform checks of values to be inserted into a table or to perform calculations on values involved in an update.  A trigger is  defined   to activate when  an  INSERT ,  DELETE , or  UPDATE  statement executes for the associated table.  A trigger can be  set to activate either  before  or  after  the triggering statement. 
+
+--- ppt/slides/slide40.xml ---
+MySQL -  Triggers 40
+
+--- ppt/slides/slide41.xml ---
+MySQL -  Triggers DELIMITER $$ CREATE TRIGGER  triggerName BEFORE | AFTER   EVENT   ON   tableName #EVENT is: INSERT, UPDATE or DELETE FOR EACH ROW  #optional  BEGIN  #executable code END 41
+
+--- ppt/slides/slide42.xml ---
+MySQL -  Triggers BEFORE | AFTER   EVENT   ON   tableName BEFORE|AFTER  enable the developer to use  OLD.  and  NEW.  values  based on  the determined  EVENT . with  insert  event  no OLD  values, it just  NEW values . with  update  event  both of OLD & NEW  values  are exist . with  delete  event  no NEW  values, it just  OLD values . Using  BEFORE : means activate this trigger before executing the SQL event. Using  AFTER : means activate this trigger after executing the SQL event. 42
+
+--- ppt/slides/slide43.xml ---
+MySQL -  Triggers 43 CREATE TABLE  gpaUpdateLog (     user varchar(20),      udate  date,      sid   int (3),      oldgpa  float(5,2),      newgpa  float(5,2) ); DELIMITER $$ CREATE TRIGGER  gpaUpdate   BEFORE  UPDATE  ON  students FOR   EACH   ROW   BEGIN     INSERT INTO  gpaUpdateLog     VALUES(USER,             NOW(),              OLD .sid ,              OLD .gpa ,              NEW .gpa ); END;
+
+--- ppt/slides/slide44.xml ---
+Database Management Systems (II) SICT 3308 Chapter  01   Procedural  Programming for  SQL Part  5 Dr. Iyad H.  Alshami Cursors
+
+--- ppt/slides/slide45.xml ---
+Cursors 45
+
+--- ppt/slides/slide46.xml ---
+Cursors A cursor is a  pointer to a set of records  returned by a SQL statement.    It enables developer to take a set of records and deal with it on a  row-by-row  basis. Cursor has three important properties: A cursor  will not reflect changes  in its  source tables . A cursor  is not updatable  it is read-only A cursor  is not scrollable , it   can be traversed in forward direction only, forward Can not skip records  from fetching.
+
+--- ppt/slides/slide47.xml ---
+Defining and Using Cursors Declare cursor : DECLARE  cursor-name  CURSOR  FOR  SELECT ...;   DECLARE  CONTINUE HANDLER FOR NOT FOUND  Specify what to do when no more records found DECLARE b INT; DECLARE CONTINUE HANDLER FOR NOT FOUND SET b = 1;  Open cursor: OPEN cursor-name; Fetch data into variables: FETCH cursor-name INTO variable [, variable];  CLOSE cursor: CLOSE cursor-name;
+
+--- ppt/slides/slide48.xml ---
+#using cursor to sum salary for male employees DELIMITER $$ CREATE Procedure  maleSalarySum (OUT  sumSalary  Decimal(10,2)) BEGIN   DECLARE  Sal,  sumSal   decimal(10,2) ;   DECLARE   continueFlag   int  default 0; DECLARE   maleCursor   CURSOR  FOR  SELECT Salary FROM emps where sex='M' ;   DECLARE  CONTINUE HANDLER FOR NOT FOUND SET  continueFlag  = 1;   OPEN   maleCursor ;   SET Sal = 0;   SET  sumSal = 0;   WHILE  continueFlag  = 0 DO          FETCH   maleCursor   INTO  Sal;         IF  continueFlag  = 0 THEN   		SET  sumSal  =  sumSal+Sal ;         END IF;     END WHILE;   CLOSE   maleCursor ;  SET  sumSalary  =  sumSal ; END Cursor   Example
+
+--- ppt/slides/slide49.xml ---
+DELIMITER $$ DROP PROCEDURE IF EXISTS  emailgroup ; CREATE PROCEDURE  emailgroup  (INOUT  emailList  varchar(4000)) BEGIN      DECLARE   continueFlag  INT DEFAULT 0;      DECLARE   useremail  varchar(100) DEFAULT "";      DECLARE   email_cursor   CURSOR  FOR  SELECT email FROM users ; 	DECLARE  CONTINUE HANDLER FOR NOT FOUND SET  continueFlag  = 1; 	OPEN   email_cursor ; 	WHILE  continueFlag  = 0 DO   		 FETCH   email_cursor  INTO  useremail ;   		IF  continueFlag  = 0 THEN   		   SET  emailList  = CONCAT( useremail ,";", emaillist );   		END IF;     	END WHILE;        CLOSE   email_cursor ; END A procedure to create email list using cursor
+
+--- ppt/slides/slide50.xml ---
+CREATE FUNCTION  namesList () RETURNS varchar(1000) BEGIN DECLARE  nlist  varchar(1000) DEFAULT ""; DECLARE  ename  varchar(25) DEFAULT ""; DECLARE  cf  INT DEFAULT 0;   DECLARE  name_cursor  CURSOR FOR SELECT name FROM emps WHERE id <= 130; 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET  cf  = 1; 	OPEN  name_cursor ; 	WHILE  cf  = 0 DO   		FETCH  name_cursor  INTO  ename ;   		IF  cf  = 0 THEN   			SET  nlist  = CONCAT( ename ,";", nlist );   		END IF;      END WHILE;       CLOSE  name_cursor ;      RETURN  nlist ;     END A procedure to create name list using cursor
+
+--- ppt/slides/slide51.xml ---
+That is enough for Procedural SQL Programming Next Chapter will be Chapter 16 “Disk Storage, Basic File Structures, Hashing, and Modern    Storage Architectures” Watch  the uploaded videos on Moodle and  Prepare your self  for Discussion on  Wednesday . 51
+
+--- ppt/slides/slide52.xml ---
+Assignment 1 Write a report supported with examples about  MySQL Error Handling  and  how to use it  in storied routines.  Submission allowed until: Tuesday 25/02/2020 23:55 via Moodle. 52
+
+--- ppt/slides/slide53.xml ---
+Views It is a database object, it is not routine 53
+
+--- ppt/slides/slide54.xml ---
+MySQL  - Views A database view is a  virtual table  or  logical table  which is defined as a SQL query with joins.  Because a view is similar to a table, which consists of rows and columns, so we can query data against it.  54
+
+--- ppt/slides/slide55.xml ---
+MySQL  - Views 55 CREATE  or  Replace   VIEW   view_name AS   SELECT   … CREATE  or  Replace   VIEW   Student_grades AS   SELECT   s.sid,s.sname,r.sem,c.cid,c.cname,r.grade From    Student_tbl  s,  Course_tble  c,  Reg_tbl  r Where   s.sid  =  r.sid    AND   c.cid  =  r.cid ;
+
+--- ppt/slides/slide56.xml ---
+MySQL  - Views 56
+
+--- ppt/slides/slide57.xml ---
+MySQL  - Views Can we  insert data via a VIEW  object? 57 CREATE   VIEW   std  as SELECT  sid ,  sname ,  sdid FROM   Student_tbl ; INSERT   INTO  std  ( sid ,  sname ,  sdid ) VALUE (440,"Ahmad",20);
+
+--- ppt/slides/slide58.xml ---
+MySQL  - Views Can we insert data via a VIEW object? 58 CREATE   VIEW   std_fullas  SELECT  sid ,  sname ,  sdid ,  dname FROM   Student_tbl ,  Dept_tbl WHERE   Student_tbl.sdid  =  Dept_tbl.did ; INSERT   INTO  std_full ( sid ,  sname,sdid,dname ) VALUE (440,"Ahmad",20,"dpt"); INSERT   INTO  std_full ( sid ,  sname,sdid ) VALUE (440,"Ahmad",20); Can not  modify more than one base table through a join view Okay

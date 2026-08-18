@@ -1,0 +1,156 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 04 Strategies for Query Processing Part 04 B+-Tree Example Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 18 Strategies for Query Processing Copyright © 2016  Ramez   Elmasri  and  Shamkant  B.  Navathe Modified by:  Iyad   Alshami
+
+--- ppt/slides/slide3.xml ---
+Outline Introduction Translating SQL Queries into Relational Algebra Algorithms for External Sorting Algorithms for SELECT Operation Implementing the JOIN Operation Algorithms for PROJECT and Set Operations Implementing Aggregate Operations Combining Operations Using Pipelining Parallel Algorithms for Query Processing Slide 16-  3
+
+--- ppt/slides/slide4.xml ---
+Do you have any idea about how query, such as the following one, will be executed? Can you think about program execution? Introduction Slide 18-  4 select   s .id ,  s .name ,  s .dno ,  d .name ,  s .gpa from  students  s ,  deptartments   d where   s .dno  =  d .dno
+
+--- ppt/slides/slide5.xml ---
+Introduction - Query Processing DBMS techniques to process a query Scanner  identifies query tokens Parser  checks the query syntax Validator  checks all attribute and relation names Query tree  (or  query graph ) created directed acyclic graph (DAG).  Execution strategy  or  query plan  devised Query optimization Planning a good execution strategy Slide 18-  5
+
+--- ppt/slides/slide6.xml ---
+Introduction - Query Processing Slide 18- 6
+
+--- ppt/slides/slide7.xml ---
+18.1  Translating SQL Queries into Relational Algebra and Other Operators Slide 8-  7
+
+--- ppt/slides/slide8.xml ---
+18.1  Translating SQL Queries into Relational Algebra and Other Operators SQL Query language used in most RDBMSs Query  decomposed into  query blocks Basic units  that can be translated into the algebraic operators such as:   = select,   = projection,  = join Contains single SELECT-FROM-WHERE expression May contain GROUP BY and HAVING clauses   Slide 18-  8
+
+--- ppt/slides/slide9.xml ---
+Translating SQL Queries (cont’d.) Example, decompose the following query: Inner block Outer block Slide 18-  9
+
+--- ppt/slides/slide10.xml ---
+Translating SQL Queries (cont’d.) Example (cont’d.) Inner block translated into:  = aggregation Operator Outer block translated into: Query optimizer chooses  execution plan  for each query block   Slide 18-  10
+
+--- ppt/slides/slide11.xml ---
+But  Select ( , projection ( , join ( ) and  aggregation  ( )  are not  all what we are care bout. and there are more operator  we need to care about such as: EXISTS, IN,  and  ANY   and there negation as well   Translating SQL Queries (cont’d.) Slide 18-  11
+
+--- ppt/slides/slide12.xml ---
+Additional Operators Semi-Join and Anti-Join Semi-join Generally used  for unnesting  EXISTS, IN,  and  ANY  subqueries Syntax:     or        is the left table and   is the right table of the semi-join A  row of   is returned  as soon  as   finds a match with any value of   without searching for further matches.   Slide 18-  12
+
+--- ppt/slides/slide13.xml ---
+Additional Operators Semi-Join and Anti-Join (cont’d.) Anti-join Used for  unnesting  NOT EXISTS, NOT IN,  and  ALL  subqueries Syntax :      or  is   the left table and  is the right table of the anti-join A  row of  is returned  only if   does not match  with  any value of  A row of  is rejected as soon as   finds a match  with any value of    Slide 18-  13
+
+--- ppt/slides/slide14.xml ---
+Additional Operators Semi-Join and Anti-Join (cont’d.) Slide 18-  14
+
+--- ppt/slides/slide15.xml ---
+18.2  Algorithms for External Sorting Slide 8-  15
+
+--- ppt/slides/slide16.xml ---
+18.2  Algorithms for External Sorting Sorting is an often-used algorithm in query processing External sorting Algorithms  suitable for large files  that do not fit entirely in main memory Sort-merge  strategy based on  sorting smaller subfiles (runs)  and  merging the sorted runs Requires buffer space in main memory DBMS cache Slide 18-  16
+
+--- ppt/slides/slide17.xml ---
+Algorithms for External Sorting (cont’d.) Degree of merging Number of sorted subfiles  that can be merged in each merge step Performance of the sort-merge algorithm Number of disk block reads and writes  before sorting is completed Slide 18-  17
+
+--- ppt/slides/slide18.xml ---
+Algorithms for External Sorting (cont’d.) Slide 18- 18
+
+--- ppt/slides/slide19.xml ---
+18.3  Algorithms for SELECT Operation Slide 8-  19
+
+--- ppt/slides/slide20.xml ---
+18.3  Algorithms for SELECT Operation SELECT operation Search operation to locate records in a disk file that satisfy a certain condition File scan  or  index scan  (if search involves an index) Search methods for simple selection  S1 : Linear search (brute force algorithm) Retrieve every record in the file, and test whether its attribute values satisfy the selection condition. S2 : Binary search If the selection condition involves an equality comparison on a key attribute on which the file is ordered. Slide 18-  20
+
+--- ppt/slides/slide21.xml ---
+Algorithms for SELECT Operation (cont’d.) Search methods for simple selection  S3a : Using a primary index If the selection condition involves an equality comparison on a  key attribute  with a primary index. S3b : Using a hash key If the selection condition involves an equality comparison on a  key attribute  with a hash key  S4 : Using a primary index to retrieve multiple records If the comparison condition is >, >=, <, or <= on a key field with a primary index  Slide 18-  21
+
+--- ppt/slides/slide22.xml ---
+Algorithms for SELECT Operation (cont’d.) Search methods for simple selection (cont’d.) S5 : Using a clustering index to retrieve multiple records. If the selection condition involves an equality comparison on a  non-key attribute  with a clustering index. S6 : Using a secondary (B+ -tree) index on an equality comparison This search method can be used to retrieve a single record if the indexing field is a  key  (has unique values) or to retrieve multiple records if the indexing field is a  nonkey . Slide 18-  22
+
+--- ppt/slides/slide23.xml ---
+Algorithms for SELECT Operation (cont’d.) Search methods for simple selection (cont’d.) S7a : Using a bitmap index If the selection condition involves a set of values for an attribute (e.g.,  Dnumber  in (3,27,49) ) S7b : Using a functional index the selection condition involves the expression ((Salary* Commission_pct ) + Salary )  Slide 18-  23
+
+--- ppt/slides/slide24.xml ---
+Algorithms for SELECT Operation (cont’d.) Search methods for  conjunctive  (logical  AND ) selection 1)  Using an individual index retrieve the records stratifies the  first condition  and  then check  whether each retrieved record  satisfies the remaining simple conditions  in the conjunctive select condition. 2)  Using a composite index If  two or more attributes are involved in equality conditions  in the conjunctive select condition and a composite index (or hash structure) exists on the combined fields we can use the index directly.  Slide 18-  24
+
+--- ppt/slides/slide25.xml ---
+Algorithms for SELECT Operation (cont’d.) Search methods for  conjunctive  (logical AND) selection 3)  Intersection of record pointers If secondary indexes, which are in a non-key fields, are available on more than one filed and the indexes retrieve sets of record pointers the intersection of the  of these sets gives the record pointers that satisfy the conjunctive select condition. Slide 18-  25
+
+--- ppt/slides/slide26.xml ---
+Algorithms for SELECT Operation (cont’d.) Disjunctive  (logical OR) selection Harder  to process and optimize With such a condition, the records satisfying the disjunctive condition are  the union  of the records satisfying the individual conditions. Hence, if any one of the conditions  does not have an access path , we are  compelled to use the brute force , linear search approach. Only if an  access path exists on every simple condition  in the disjunction can we optimize the selection by retrieving the records satisfying each condition—or their record ids—and then  applying the union operation  to eliminate duplicates.  Slide 18-  26
+
+--- ppt/slides/slide27.xml ---
+Algorithms for SELECT Operation (cont’d.) Selectivity Ratio of  the number of records  (tuples) that satisfy the condition  to the total number of records  (tuples)  in the file Number  between  zero  (no records satisfy condition) and  one  (all records satisfy condition) Query optimizer  receives input  from system catalog to  estimate selectivity. Slide 18-  27
+
+--- ppt/slides/slide28.xml ---
+Algorithms for SELECT Operation (cont’d.) Slide 18-  28 A typical RDBMS catalog contains the following types of information:  For each  relation (table)  r  with schema  R  containing  rR   tuples:  The  number of rows /records or its cardinality: | r ( R )|.  We will refer to the number of rows simply as  rR .  The “ width ” of the relation  i.e., the length of each tuple in the relation this length of tuple is referred to as  R.  The  number of blocks  that relation occupies in storage referred to as  bR.   The  blocking factor  bfr which is the number of tuples per block. 
+
+--- ppt/slides/slide29.xml ---
+Algorithms for SELECT Operation (cont’d.) Slide 18-  29 A typical RDBMS catalog contains the following types of information:  For each  attribute  A  in relation  R : The  number of distinct values  of  A  in  R NDV( A ,  R ). The  max  and  min  values of attribute  A  in  R max ( A ,  R ) and min ( A ,  R ). 	
+
+--- ppt/slides/slide30.xml ---
+18.4  Implementing the JOIN Operation Slide 8-  30
+
+--- ppt/slides/slide31.xml ---
+18.4  Implementing the JOIN Operation JOIN  operation One of the  most time consuming  in query processing EQUIJOIN (or NATURAL JOIN) Two-way  or  multiway joins join on two files or more than two  Methods for implementing joins J1 : Nested-loop join (nested-block join) J2 : Index-based nested-loop join J3 : Sort-merge join J4 : Partition-hash join  (or just hash-join)  Slide 18-  31 select   s .id ,  s .name ,  s .dno ,  d .name ,  s .gpa from  students  s ,  deptartments   d where   s .dno  =  d .dno
+
+--- ppt/slides/slide32.xml ---
+Implementing the JOIN Operation (cont’d.) Methods for implementing joins J1 : Nested-loop join (nested-block join) This is the default (brute force) algorithm because it does not require any special access paths on either file in the join.  J2 : Index-based nested-loop join using an access structure to retrieve the matching records Slide 18-  32
+
+--- ppt/slides/slide33.xml ---
+Implementing the JOIN Operation (cont’d.) Methods for implementing joins J3 : Sort-merge join If the records of R and S are physically sorted (ordered) by value of the join attributes A and B, respectively, we can implement the join in the most efficient way possible. J4 : Partition-hash join  (or just hash-join)  The records of files R and S are partitioned into smaller files. The partitioning of each file is done using the same hashing function h on the join attribute A of R (for partitioning file R) and B of S (for partitioning file S).  Slide 18-  33
+
+--- ppt/slides/slide34.xml ---
+Implementing the JOIN Operation (cont’d.) Available buffer space has important effect on some JOIN algorithms. For Example: n B   = 7 B buffers Dept = 50r = 10B Emp  = 6000r = 2000B The used buffer:  1  n B   to read inner relation file and  1  n B   to write output file, then  5  n B   will be used to read outer relation file Nested-loop approach Read as many blocks as possible at a time into memory from the file whose records are used for the outer loop. Advantageous  to use the file with fewer blocks as the  outer-loop  file. Slide 18-  34 select   e .id ,  e .name ,  e .dno ,  d .name ,  e .salary from  employees  e ,  deptartments   d where   e . dno  =  d .dno
+
+--- ppt/slides/slide35.xml ---
+Implementing the JOIN Operation (cont’d.) Join selection factor Fraction of records  in one file that will be joined with records in another file. Depends on the particular  equijoin condition  with another file. Partition-hash join Each file is partitioned into  M  partitions using the  same partitioning hash function on the join attributes Each pair of corresponding partitions is joined Slide 18-  35
+
+--- ppt/slides/slide36.xml ---
+18.5  Algorithms for PROJECT and Set Operations Slide 8-  36
+
+--- ppt/slides/slide37.xml ---
+18.5  Algorithms for PROJECT and Set Operations PROJECT operation After projecting  R  on only the columns in the list of attributes,  any duplicates are removed  by treating the result strictly  as   a set of tuples Default for SQL queries No  elimination of duplicates  from the query result Duplicates eliminated only if the keyword  DISTINCT   is included Slide 18-  37
+
+--- ppt/slides/slide38.xml ---
+Algorithms for PROJECT and Set Operations (cont’d.) Set operations UNION INTERSECTION SET DIFFERENCE CARTESIAN PRODUCT Set operations sometimes expensive to implement Sort-merge technique Hashing Slide 18-  38
+
+--- ppt/slides/slide39.xml ---
+Algorithms for PROJECT and Set Operations (cont’d.) Use of anti-join for  SET DIFFERENCE EXCEPT  or  MINUS  in SQL Example:  Find which departments have no employees becomes Slide 18-  39
+
+--- ppt/slides/slide40.xml ---
+18.6  Implementing Aggregate Operations and Different Types of JOINs Aggregate operators MIN, MAX, COUNT, AVERAGE, SUM can be computed by a table scan or using an appropriate index Example: If an (ascending) B + - tree index on  Salary  exists: Optimizer can use the  Salary  index to search for the largest  Salary  value  Follow the rightmost   pointer in each index node from the root to the rightmost leaf Slide 18-  40
+
+--- ppt/slides/slide41.xml ---
+Implementing Aggregate Operations and Different Types of JOINs (cont’d.) AVERAGE or SUM Index can be used  if it is a  dense index computation applied to the values in the index Nondense  index  can be used if actual number of records associated with each index value is stored in each index entry. COUNT Number of values can be computed from the index Slide 18-  41
+
+--- ppt/slides/slide42.xml ---
+Implementing Aggregate Operations and Different Types of JOINs (cont’d.) Standard JOIN (called INNER JOIN in SQL) Variations of joins Outer join Left, right, and full Example:  Semi-Join Anti-Join Non-Equi-Join Slide 18-  42
+
+--- ppt/slides/slide43.xml ---
+18.7 Combining Operations Using Pipelining SQL query translated into relational algebra expression Sequence of relational operations Materialized evaluation Creating, storing, and passing temporary results General query goal:  minimize the number of temporary files Pipelining  or  stream-based  processing Combines several operations into one Avoids writing temporary files Slide 18-  43
+
+--- ppt/slides/slide44.xml ---
+Combining Operations Using Pipelining (cont’d.) Pipelined  evaluation benefits Avoiding cost  and  time delay  associated with writing intermediate results to disk Being able to start  generating results  as  quickly  as possible Iterator Operation implemented in such a way that it outputs one tuple at a time. Many iterators may be active at one time. Slide 18-  44
+
+--- ppt/slides/slide45.xml ---
+Combining Operations Using Pipelining (cont’d.) Iterator interface methods Open() Get_Next() Close() Some physical operators  may not lend themselves to  the iterator interface concept Pipelining not supported Iterator concept can also be applied to access methods. Slide 18-  45
+
+--- ppt/slides/slide46.xml ---
+18.8 Parallel Algorithms for Query Processing Parallel database architecture approaches Shared-memory architecture Multiple processors can access common main memory region Shared-disk architecture Every processor has its own memory Machines have access to all disks Shared-nothing architecture Each processor has own memory and disk storage Most commonly used in parallel database systems Slide 18-  46
+
+--- ppt/slides/slide47.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Linear speed-up Linear reduction in time taken for operations Linear  scale-up Constant sustained performance by increasing the number of processors and disks Slide 18-  47
+
+--- ppt/slides/slide48.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Operator-level parallelism Horizontal partitioning Round-robin partitioning Range partitioning Hash partitioning Sorting If data has been range-partitioned on an attribute: Each partition can be sorted separately in parallel Results concatenated Reduces sorting time Slide 18-  48
+
+--- ppt/slides/slide49.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Selection If condition is an equality condition on an attribute used for range partitioning: Perform selection only on partition to which the value belongs Projection without duplicate elimination Perform operation in parallel as data is read Duplicate elimination Sort tuples and discard duplicates Slide 18-  49
+
+--- ppt/slides/slide50.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Parallel joins divide the join into  n  smaller joins Perform smaller joins in parallel on  n  processors Take a union of the result Parallel join techniques Equality-based partitioned join Inequality join with partitioning and replication Parallel partitioned hash join Slide 18-  50
+
+--- ppt/slides/slide51.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Aggregation Achieved by partitioning on the grouping attribute and then computing the aggregate function locally at each processor Set operations If argument relations are partitioned using the same hash function, they can be done in parallel on each processor Slide 18-  51
+
+--- ppt/slides/slide52.xml ---
+Parallel Algorithms for Query Processing (cont’d.) Intraquery parallelism Approaches Use parallel algorithm for each operation, with appropriate partitioning of the data input to that operation Execute independent operations in parallel Interquery parallelism Execution of multiple queries in parallel Goal: scale up Difficult to achieve on shared-disk or shared-nothing architectures Slide 18-  52

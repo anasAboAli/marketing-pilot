@@ -1,0 +1,162 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 05 Query Optimization Part 04 B+-Tree Example Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 19 Query Optimization Copyright © 2016  Ramez   Elmasri  and  Shamkant  B.  Navathe Modified by:  Iyad   Alshami
+
+--- ppt/slides/slide3.xml ---
+Introduction Query optimization Conducted by a query optimizer in a DBMS Goal : select  best available strategy  for executing query Based on information available Most RDBMSs use  a tree  as the internal   representation of a query. Slide 19-  3
+
+--- ppt/slides/slide4.xml ---
+19.1 Query Trees and Heuristics for Query Optimization Step 1 :  scanner  and  parser  generate initial query representation Step 2 : representation is  optimized  according to  heuristic rules Step 3 : query  execution plan  is developed Execute groups of operations based on access paths available and files involved Slide 19-  4
+
+--- ppt/slides/slide5.xml ---
+Query Trees and Heuristics for Query Optimization (cont’d.) Example heuristic rule Apply SELECT and PROJECT before JOIN Reduces size of files to be joined Query tree Represents  relational algebra  expression Query graph Represents  relational calculus  expression Slide 19-  5
+
+--- ppt/slides/slide6.xml ---
+Query Trees and Query Graph Corresponding to Q2 Slide 19- 6 Figure 19.1 Two query trees for the query Q2.  Query tree corresponding to the relational algebra expression for Q2.  Initial (canonical) query tree for SQL query Q2.  Query graph for Q2.
+
+--- ppt/slides/slide7.xml ---
+Query Trees and Query Graph Corresponding to Q2 Slide 19- 7 Figure 19.1 Two query trees for the query Q2.  Query tree corresponding to the relational algebra expression for Q2.  Initial (canonical) query tree for SQL query Q2.  Query graph for Q2.
+
+--- ppt/slides/slide8.xml ---
+Query Trees and Query Graph Corresponding to Q2 Slide 19- 8 Figure 19.1 Two query trees for the query Q2.  Query tree corresponding to the relational algebra expression for Q2.  Initial (canonical) query tree for SQL query Q2.  Query graph for Q2.
+
+--- ppt/slides/slide9.xml ---
+Query Trees and Heuristics for Query Optimization (cont’d.) Query tree  represents a  specific order of operations  for executing a query Preferred  to query graph for this reason. Query graph Relation nodes  displayed as  single circles Constants  represented by  constant nodes Double circles or  ovals Selection  or  join conditions  represented as  edges Attributes to be retrieved displayed in square brackets Slide 19-  9
+
+--- ppt/slides/slide10.xml ---
+Heuristic Optimization of Query Trees Many different query trees can be used to represent the query and get the same results Figure 19.1b  shows initial tree for Q2 Very inefficient  - will never be executed Optimizer will transform into equivalent final query tree Slide 19-  10
+
+--- ppt/slides/slide11.xml ---
+Query Transformation Example Steps in converting a query tree during heuristic optimization. Create Initial (canonical) query tree for SQL query Q. Moving SELECT operations down the query tree. Applying the more restrictive SELECT operation first. Replacing CARTESIAN PRODUCT and SELECT with JOIN operations. Moving PROJECT operations down the query tree. Slide 19-  11
+
+--- ppt/slides/slide12.xml ---
+Query Transformation Example Slide 19-  12 Figure 19.2 Steps in converting a query tree during heuristic optimization.  (a)  Initial (canonical) query tree for SQL query Q .
+
+--- ppt/slides/slide13.xml ---
+Query Transformation Example (cont’d.) Slide 19-  13 Figure 19.2 Steps in converting a query tree during heuristic optimization.  (b)  Moving SELECT operations down the query tree. 
+
+--- ppt/slides/slide14.xml ---
+Query Transformation Example (cont’d.) Slide 19-  14 Figure 19.2 Steps in converting a query tree during heuristic optimization.  (c)  Applying the more restrictive SELECT operation first . 
+
+--- ppt/slides/slide15.xml ---
+Query Transformation Example (cont’d.) Slide 19-  15 Figure 19.2 Steps in converting a query tree during heuristic optimization.  (d)  Replacing CARTESIAN PRODUCT and SELECT with JOIN operations .
+
+--- ppt/slides/slide16.xml ---
+Query Transformation Example (cont’d.) Slide 19-  16 Figure 19.2 Steps in converting a query tree during heuristic optimization.  (e)  Moving PROJECT operations down the query tree.
+
+--- ppt/slides/slide17.xml ---
+General Transformation Rules for Rational Algebra Equations Slide 19-  17 Some transformation rules useful in query optimization Cascade of  Conjunction selection conditions can be broken up into cascade (sequence) of individual   operations. Commutativity of  Cascade of  In a sequence of individual   operations, all but the last one can be ignored. Commuting   with   
+
+--- ppt/slides/slide18.xml ---
+Summary of Heuristics for Algebraic Optimization Apply first the operations that reduce the size of intermediate results Perform  SELECT and PROJECT operations  as early as possible  to  reduce the number of tuples and attributes The SELECT and JOIN operations that  are most restrictive should be executed before other  similar operations Slide 19-  18
+
+--- ppt/slides/slide19.xml ---
+19.2 Choice of Query Execution Plans Materialized evaluation Result of an operation  stored as temporary  relation Pipelined evaluation Operation results  forwarded directly  to the next operation in the query sequence Slide 19-  19
+
+--- ppt/slides/slide20.xml ---
+Nested Subquery Optimization Unnesting Process of removing the nested query and converting the inner and outer query into one block Queries involving a nested subquery connected by IN or ANY connector can always be converted into a single block query. Using Semi-Join (s=) and Anti-Join (A=) Alternate technique Creating temporary result tables from subqueries and using them in joins Slide 19-  20 SELECT  Fname ,  Lname , Salary From EMPLOYEE E, DEPARTMENT D WHERE  D.Dnumber  s= E.Dno  AND  D.Zipcode =30332
+
+--- ppt/slides/slide21.xml ---
+Subquery (View) Merging Transformation Inline view FROM clause subquery View merging operation Merges the tables in the view with the tables from the outer query block Views containing select-project-join operations are considered simple views Can always be subjected to this type of view-merging Slide 19-  21
+
+--- ppt/slides/slide22.xml ---
+Subquery (View) Merging Transformation (cont’d.) Group-By view-merging Delaying the Group By  operation  after performing joins may reduce  the data subjected to grouping in case the joins have low join selectivity Alternately,  performing Group By early  may reduce  the amount of data subjected to subsequent joins Optimizer  determines  whether to merge GROUP-BY views  based on  estimated costs Slide 19-  22
+
+--- ppt/slides/slide23.xml ---
+Materialized Views View defined in database as a query Materialized view  stores  results of that query May be stored temporarily or permanently Optimization technique Using materialized views  to avoid some of the computation  involved in the query Easier to read it when needed than recompute from scratch Slide 19-  23
+
+--- ppt/slides/slide24.xml ---
+Incremental View Maintenance Update view incrementally by accounting for changes that occurred since last update Join Selection Projection Intersection Aggregation Slide 19-  24
+
+--- ppt/slides/slide25.xml ---
+19.3 Use of Selectives in Cost-Based Optimization Query optimizer  estimates  and  compares costs  of query execution using different strategies Chooses  lowest cost estimate strategy Process  suited to compiled  queries Interpreted queries Entire process occurs at runtime Cost estimate  may slow down  response time Slide 19-  25
+
+--- ppt/slides/slide26.xml ---
+Use of Selectives in Cost-Based Optimization (cont’d.) Cost-based query optimization approach For a given query subexpression, multiple equivalence rules may apply Quantitative measure for evaluating alternatives Cost metric includes space and time requirements Design appropriate search strategies by keeping cheapest alternatives and pruning costlier alternatives Scope of query optimization is a query block Global query optimization involves multiple query blocks Slide 19-  26
+
+--- ppt/slides/slide27.xml ---
+Use of Selectives in Cost-Based Optimization (cont’d.) Cost components for query execution Access cost to secondary storage Disk storage cost Computation cost Memory usage cost Communication cost Slide 19-  27
+
+--- ppt/slides/slide28.xml ---
+Catalog Information Used in Cost Functions Information stored in DBMS catalog and used by optimizer File size Organization Number of levels of each multilevel index Number of distinct values of an attribute Attribute selectivity Allows calculation of selection cardinality Average number of records that satisfy equality selection condition on that attribute Slide 19-  28
+
+--- ppt/slides/slide29.xml ---
+Histograms Tables or data structures that record information about the distribution of data RDBMS stores histograms for most important attributes Slide 19-  29
+
+--- ppt/slides/slide30.xml ---
+19.4 Cost Functions for SELECT Operation Notation used in cost formulas : Cost for method  in block accesses : Number of records (tuples) in a relation  : Number of blocks occupied by relation    (also referred to as  )  : Blocking factor (i.e., number of records per block) in relation    : Selectivity of an attribute  A  for a given condition : Selection cardinality of the attribute being selected ( ) : Number of levels of the index for attribute  : Number of first-level blocks of the index on attribute  :  Number of distinct values of attribute    in relation    Slide 19-  30
+
+--- ppt/slides/slide31.xml ---
+Cost Function for SELECT Operation (cont’d.) S1 : Linear search (brute force approach) Search all file blocks to retrieve all records For equality condition  on a key attribute , on average one-half the records are searched S2 : Binary search Reduces to   if equality condition is  on a key attribute   Slide 19-  31
+
+--- ppt/slides/slide32.xml ---
+Cost Function for SELECT Operation (cont’d.) S3a : Using a primary index to retrieve a single record ,  where   is the number of index levels S3b : Using a hash key to retrieve a single record S4 : Using an ordering index to retrieve multiple records   Slide 19-  32
+
+--- ppt/slides/slide33.xml ---
+Cost Functions for SELECT Operation (cont’d.) Slide 19-  33 S5 : Using clustering index to retrieve multiple records S6 : Using a secondary (B+ tree) index   (worst case)   (for range quires)  
+
+--- ppt/slides/slide34.xml ---
+Cost Functions for SELECT Operation (cont’d.) Dynamic programming  as optimization technique Cost-based optimization approach. Subproblems are solved only once. Applies when a problem has subproblems that themselves have sub-problems. Slide 19-  34
+
+--- ppt/slides/slide35.xml ---
+Example Suppose that the EMPLOYEE has  rE  = 10,000 records stored in  bE  = 2,000 disk blocks with blocking factor  bfrE  = 5 records/block  and the following access paths :  A clustering index on Salary, with levels  xSalary  = 3 and average selection cardinality  sSalary  = 20.  (This corresponds to a selectivity of  slSalary  = 20/10000 = 0.002.)  A secondary index on the key attribute  Ssn , with  xSsn =4  ( sSsn =1,  slSsn =0.0001). Refer to  page   716  in the  TextBook Slide 19-  35
+
+--- ppt/slides/slide36.xml ---
+19.5 Cost Functions for the JOIN Operation Cost functions involve estimate of file size that results from   the JOIN operation Join selectivity Ratio of the size of resulting file to size of the CARTESIAN PRODUCT file Simple formula for join selectivity Join cardinality Slide 19-  36
+
+--- ppt/slides/slide37.xml ---
+Cost Functions for the JOIN Operation (cont’d.) J1 : Nested-loop join For  memory buffer blocks: For   memory buffer blocks: J2 : Index-based nested-loop join For a secondary index with selection cardinality S B  for join attribute B of S:   Slide 19-  37
+
+--- ppt/slides/slide38.xml ---
+Cost Functions for the JOIN Operation (cont’d.) J3 : Sort-merge join For files already sorted on the join attributes Cost of sorting must be added if sorting needed J4 : Partition-hash join Slide 19-  38
+
+--- ppt/slides/slide39.xml ---
+Cost Functions for the JOIN Operation (cont’d.) Join selectivity and cardinality  for  semi-join Unnesting query above leads to  semi-join Join selectivity Join cardinality Slide 19-  39
+
+--- ppt/slides/slide40.xml ---
+Cost Functions for the JOIN Operation (cont’d.) Join selectivity and cardinality  for  anti-join Unnesting query above leads to  anti-join Join selectivity Join cardinality Slide 19-  40
+
+--- ppt/slides/slide41.xml ---
+Example Suppose that the EMPLOYEE has  r E  = 10,000 records stored in  b E  = 2,000 disk blocks, and assume that the DEPARTMENT file consists of  r D   = 125 records stored in  b D   = 13 disk blocks. Consider the following two join operations:  OP6: EMPLOYEE       Dno = Dnumber   DEPARTMENT  OP7: DEPARTMENT     Mgr_ssn = Ssn   EMPLOYEE  Refer to  Page 720  in the  TextBook Slide 19-  41
+
+--- ppt/slides/slide42.xml ---
+Cost Functions for the JOIN Operation (cont’d.) Multirelation queries and JOIN ordering choices Left-deep join tree Right-deep join tree Bushy join tree Slide 19-  42 Table 19.1 Number of permutations of left-deep and bushy join trees of  n  relations
+
+--- ppt/slides/slide43.xml ---
+Cost Functions for the JOIN Operation (cont’d.) Physical optimization involves execution decision at the physical level Cost-based physical optimization Top-down approach Bottom-up approach Certain  physical level heuristics  make cost optimizations unnecessary Example: for selections, use  index scans  whenever possible Slide 19-  43
+
+--- ppt/slides/slide44.xml ---
+Cost Functions for the JOIN Operation (cont’d.) Left-deep trees generally preferred Work well for common algorithms for join Able to  generate fully pipelined  plans Characteristics of dynamic programming algorithm Optimal solution structure is developed Value of the optimal solution is recursively defined Optimal solution is computed and its value developed in a bottom-up fashion Slide 19-  44
+
+--- ppt/slides/slide45.xml ---
+19.6 Example to Illustrate Cost-Based Query Optimization Example: Consider Q2 below and query tree from Figure 19.1(a) on slide 6 Information about the relations shown in Figure 19.6 (next slide) Slide 19-  45
+
+--- ppt/slides/slide46.xml ---
+Slide 19- 46 Figure 19.6 Sample statistical information for relations in Q2.  (a) Column information  (b) Table information (c) Index information
+
+--- ppt/slides/slide47.xml ---
+Example to Illustrate Cost-Based Query Optimization (cont’d.) Assume optimizer considers only left-deep trees Evaluate potential join orders PROJECT    DEPARTMENT    EMPLOYEE DEPARTMENT    PROJECT    EMPLOYEE DEPARTMENT    EMPLOYEE    PROJECT EMPLOYEE     DEPARTMENT    PROJECT Slide 16-  47
+
+--- ppt/slides/slide48.xml ---
+19.7 Additional Issues Related to Query Optimization Displaying the system’s query execution plan Oracle syntax EXPLAIN PLAN FOR <SQL query> IBM DB2 syntax EXPLAIN PLAN SELECTION [additional options] FOR <SQL-query> SQL server syntax SET SHOWPLAN_TEXT ON or SET SHOWPLAN_XML ON or SET SHOWPLAN_ALL ON Slide 19-  48
+
+--- ppt/slides/slide49.xml ---
+Additional Issues Related to Query Optimization (cont’d.) Size estimation of other operations Projection Set operations Aggregation Outer join Plan caching Plan stored by query optimizer for later use by same queries with different parameters Top k-results optimization Limits strategy generation Slide 19-  49
+
+--- ppt/slides/slide50.xml ---
+19.8 An Example of Query Optimization in Data Warehouses Star transformation optimization Goal: access a reduced set of data from the fact table and avoid using a full table scan on it Classic star transformation Bitmap index star transformation Joining back Slide 19-  50
+
+--- ppt/slides/slide51.xml ---
+19.9 Overview of Query Optimization in Oracle Physical optimizer is cost-based Scope is a single query block Calculates cost based on object statistics, estimated resource use and memory needed Global query optimizer Integrates logical transformation and physical optimization phases to generate optimal plan for entire query tree Adaptive optimization Feedback loop used to improve on previous decisions Slide 19-  51
+
+--- ppt/slides/slide52.xml ---
+Overview of Query Optimization in Oracle (cont’d.) Array processing Hints Specified by application developer Embedded in text of SQL statement Types: access path, join order, join method, enabling or disabling a transformation Outlines used to preserve execution plans SQL plan management Slide 19-  52
+
+--- ppt/slides/slide53.xml ---
+19.10 Semantic Query Optimization Uses constraints specified on the database schema Goal: modify one query into another that is more efficient to execute Slide 19-  53
+
+--- ppt/slides/slide54.xml ---
+19.11 Summary Query trees Heuristic approaches used to improve efficiency of query execution Reorganization of query trees Pipelining and materialized evaluation Cost-based optimization approach Oracle query optimizer Semantic query optimization Slide 19-  54

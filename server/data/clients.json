@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "name": "شركة الريادة العقارية",
+    "industry": "العقارات",
+    "campaigns": 8,
+    "revenue": "18,500 ر.س",
+    "manager": "أحمد محمد",
+    "status": "نشط"
+  },
+  {
+    "id": 2,
+    "name": "عيادات النخبة",
+    "industry": "الصحة",
+    "campaigns": 5,
+    "revenue": "12,300 ر.س",
+    "manager": "محمد علي",
+    "status": "نشط"
+  },
+  {
+    "id": 3,
+    "name": "gh",
+    "industry": "fg",
+    "manager": "fg",
+    "status": "نشط",
+    "campaigns": 0,
+    "revenue": "0 ر.س"
+  }
+]

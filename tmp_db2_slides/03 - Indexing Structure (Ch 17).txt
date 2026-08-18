@@ -1,0 +1,201 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 03 Indexing Structures for Files  and Physical Database Design Part 04 B+-Tree Example Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 17 Indexing Structures  for Files and Physical Database Design Copyright © 2016  Ramez   Elmasri  and  Shamkant  B.  Navathe Modified by: Iyad H.  Alshami
+
+--- ppt/slides/slide3.xml ---
+Introduction Indexes   used  to speed up record retrieval  in response to certain search conditions Index structures provide  secondary access paths Indices are an additional files on disk Any field can be used to create an index Multiple indexes can be constructed Most indexes based on ordered files Tree data structures, such as B + -Tree, organize the index Slide 17-  3
+
+--- ppt/slides/slide4.xml ---
+17.1 Types of Single-Level Ordered Indexes Slide 16-  4
+
+--- ppt/slides/slide5.xml ---
+17.1  Types of Single-Level Ordered Indexes Ordered index similar to index in a textbook Indexing field (attribute) Index stores each value of the index field with list of pointers to all disk blocks that contain records with that field value Values in index are ordered so that we can do a  binary search  on the index.  Primary index Specified on the  ordering key field  of ordered file of records Slide 17-  5
+
+--- ppt/slides/slide6.xml ---
+Types of Single-Level Ordered Indexes (cont’d.) Clustering index Used if  numerous records  can  have the same value  for the  ordering field in this case the data file is called  a clustered file .  Secondary index Can be specified on  any nonordering field Data file  can have several secondary  indexes Slide 17-  6
+
+--- ppt/slides/slide7.xml ---
+Types of Single-Level Ordered Indexes (cont’d.) Indexes may be  dense   or  sparse Dense index  has an index entry for every search key value   in the data file Sparse index  has entries for only some search values. Ordered file with two fields Primary key ( K)  and Pointer ( P) <K, P> P  can be the  physical/logical  block address  or  the record address Slide 17-  7 X  may be the  physical address of a block  (or page) in the file, as in the case of  P ( i ) above.  X  may be the  record address made up of a block address  and a record id (or offset) within the block.  X  may be  a logical address of the block  or  of the record within the file  and is a relative number that would be mapped to a physical address 
+
+--- ppt/slides/slide8.xml ---
+Primary Indexes Ordered file with two fields Primary key,  K(i) Pointer to a disk block,  P( i ) <K( i ), P( i )> One index entry  (index record) in the index file  for each block  in the data file. Primary index is a non-dense (sparse) index. the keys of its  anchor record (1 st  record in the block)  rather than for every search value (or every record).  Slide 17-  8
+
+--- ppt/slides/slide9.xml ---
+Primary Indexes  (cont’d.) Slide 17- 9
+
+--- ppt/slides/slide10.xml ---
+Primary Indexes (cont’d.) Major problem:  insertion and deletion of records means we have to move records around and change index values Solutions 1) Use unordered overflow file Periodically, the overflow file is sorted and merged with the master file during file reorganization.  2) Use linked list of overflow records As in hashing overflow Slide 17-  10
+
+--- ppt/slides/slide11.xml ---
+Clustering Indexes Clustering field File records are physically  ordered on a nonkey field  without a distinct value for each record Ordered file with two fields Same type as clustering field Disk block pointer clustering index is a  non-dense  index  insertion and deletion still cause problems because the data records are physically ordered.  To alleviate the problem of insertion, it is common to reserve a whole block (or a cluster of contiguous blocks) for  each value  of the clustering field; all records with that value are placed in the block (or block cluster). This makes insertion and deletion relatively straightforward. Slide 17-  11
+
+--- ppt/slides/slide12.xml ---
+Clustering Indexes  (cont’d.) Slide 17- 12
+
+--- ppt/slides/slide13.xml ---
+Secondary Indexes Provide secondary means of accessing a data file Some primary access exists It provides a  logical ordering  on the records by the indexing field.  Ordered file with two fields Indexing field,  K(i) Block pointer  or  record pointer,  P( i ) Secondary index can be  dense  index  Usually  need more  storage space  and  longer search time than primary index Improved search time for arbitrary record Slide 17-  13
+
+--- ppt/slides/slide14.xml ---
+Secondary Indexes  (cont’d.) Slide 17- 14
+
+--- ppt/slides/slide15.xml ---
+Secondary Indexes  (cont’d.) Slide 17- 15
+
+--- ppt/slides/slide16.xml ---
+Types of Single-Level Ordered Indexes (cont’d.) Slide 17- 16
+
+--- ppt/slides/slide17.xml ---
+17.2 Multilevel Indexes Slide 17- 17
+
+--- ppt/slides/slide18.xml ---
+17.2  Multilevel Indexes Designed to greatly reduce remaining search space as search is conducted. Replace   by  .  (fan-out) = the   for index file Index file Considered first (or  base level ) of a multilevel index Second level Primary index  to the  first level Third level Primary index  to the  second level   Slide 17-  18
+
+--- ppt/slides/slide19.xml ---
+Multilevel Indexes Slide 17- 19
+
+--- ppt/slides/slide20.xml ---
+Multilevel Indexes Slide 17- 20
+
+--- ppt/slides/slide21.xml ---
+Multilevel Indexes Slide 16-  21 A1( kv ) A2 A3 A4 kv pointer Data File Level 0 Index File Level 1 (base)     kv  (L1) pointer Index File Level 2   Kv  (L2) pointer Index File Level 3   Can be a Primary, Cluster or Secondary Index
+
+--- ppt/slides/slide22.xml ---
+Multilevel Indexes Slide 16-  22 A1( kv ) A2 A3 A4 kv pointer Data File Level 0 Index File Level 1 (base)     kv  (L1) pointer Index File Level 2  
+
+--- ppt/slides/slide23.xml ---
+17.3 Dynamic Multilevel Indexes Using B-Trees and B+ -Trees Slide 16-  23
+
+--- ppt/slides/slide24.xml ---
+17.3  Dynamic Multilevel Indexes Using B-Trees and B+ -Trees Tree data structure terminology Tree is  formed  of  nodes Each node (except root)  has   one parent  and  zero or more child  nodes Leaf node  has no child nodes Unbalanced   tree  if leaf nodes occur at different levels Nonleaf  node  called  internal   node Subtree   of node consists of node and all descendant nodes Slide 17-  24
+
+--- ppt/slides/slide25.xml ---
+Tree Data Structure Slide 17- 25
+
+--- ppt/slides/slide26.xml ---
+Search Trees and B-Trees Search tree used to guide search for a record Given  a value  of  one of record’s fields A search tree of  order P  is a tree such  that each node contains at most   P − 1  search values and  P  pointers in the order  <P 1 , K 1 , P 2 , K 2 , ... , P q−1 , K q−1 ,  P q > , where q ≤ p.  Slide 17-  26
+
+--- ppt/slides/slide27.xml ---
+Search Trees and B-Trees (cont’d.) Algorithms necessary for  inserting  and  deleting  search values into and from the tree. Slide 17-  27
+
+--- ppt/slides/slide28.xml ---
+B-Trees Provide  multi-level  access structure Tree is always balanced To guarantee that nodes are evenly distributed To make the search speed uniform Space wasted by deletion never becomes excessive Each node is at least half-full Each node in a B-tree of  order  p  can have at most  p-1  search values Slide 17-  28
+
+--- ppt/slides/slide29.xml ---
+B-Tree Structures Slide 17- 29
+
+--- ppt/slides/slide30.xml ---
+B+ -Trees Data pointers  stored only at  the leaf nodes Leaf nodes  have an entry for every   value  of the search field. For a key search field, and a data pointer to the record. For a nonkey search field, the pointer points to a block containing pointers to the data file records. Internal nodes Some search field values from the leaf nodes repeated to guide search Slide 17-  30
+
+--- ppt/slides/slide31.xml ---
+B+ -Trees (cont’d.) Slide 17- 31
+
+--- ppt/slides/slide32.xml ---
+Searching for a Record With Search Key Field Value K, Using a B+ -Tree Slide 17-  32
+
+--- ppt/slides/slide33.xml ---
+Searching for a Record With Search Key Field Value K, Using a B+ -Tree Slide 16-  33 7,5,3,9,4,8,2,6,1,10 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Construct a B+-Tree of order 3 using the following data:
+
+--- ppt/slides/slide34.xml ---
+Insert a search value into a B+ -Tree Slide 16-  34
+
+--- ppt/slides/slide35.xml ---
+Insert a search value into a B+ -Tree 7,5,3,9,4,8,2,6,1,10 • 07 • 05 • • 05 • 07 • +5 +3, overflow • 03 • 05 • • 07 • 09 • • 05 • 07 • +4, overflow • 03 • 04 • • 07 • 09 • • 04 • 05 • +8, overflow • 05 • 07 • Slide 16- 28 +9 09
+
+--- ppt/slides/slide36.xml ---
+Insert a search value into a B+ -Tree Slide 16-  36 7,5,3,9,4,8,2,6,1,10 • 03 • 04 • • 07 • 08 • • 04 • 00 • +2, overflow • 05 • 07 • • 08 • 00 • • 05 • 00 • • 09 • 00 • • 04 • 00 • • 07 • 08 • • 03 • 04 • +6, overflow • 05 • 07 • • 08 • 00 • • 05 • 00 • • 09 • 00 • • 02 • 03 •
+
+--- ppt/slides/slide37.xml ---
+Insert a search value into a B+ -Tree Slide 16-  37 7,5,3,9,4,8,2,6,1,10 • 04 • 00 • • 06 • 07 • • 03 • 04 • +1, overflow • 05 • 07 • • 07 • 08 • • 05 • 00 • • 09 • 00 • • 08 • 00 • • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • • 02 • 03 • • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • +10
+
+--- ppt/slides/slide38.xml ---
+Insert a search value into a B+ -Tree Slide 16-  38 7,5,3,9,4,8,2,6,1,10 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 •
+
+--- ppt/slides/slide39.xml ---
+Delete from a B+ -Tree Slide 16-  39 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Delete 10 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Result
+
+--- ppt/slides/slide40.xml ---
+Delete from a B+ -Tree Slide 16-  40 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Delete 7 • 03 • 05 • • 02 • 00 • • 08 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 08 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Result
+
+--- ppt/slides/slide41.xml ---
+Delete from a B+ -Tree Slide 16-  41 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Delete 5 Result • 03 • 07 • • 02 • 00 • • 08 • 00 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 06 • 07 •
+
+--- ppt/slides/slide42.xml ---
+Delete from a B+ -Tree Slide 16-  42 • 03 • 05 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 06 • 07 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 05 • 00 • Delete 5 Result • 03 • 06 • • 02 • 00 • • 07 • 08 • • 04 • 00 • • 01 • 02 • • 04 • 00 • • 07 • 00 • • 08 • 00 • • 09 • 10 • • 03 • 00 • • 06 • 00 •
+
+--- ppt/slides/slide43.xml ---
+Whiteboard  Slide 16-  43 order 3  78, 52, 81, 40, 33, 90, 85, 20, 38
+
+--- ppt/slides/slide44.xml ---
+17.4 Indexes on Multiple Keys Slide 16-  44
+
+--- ppt/slides/slide45.xml ---
+17.4  Indexes on Multiple Keys Multiple attributes involved in many retrieval and update requests need to retrieve employees in certain department whose age 45. Composite keys Access structure using key value that combines attributes <( Dno , Age), p> Slide 17-  45
+
+--- ppt/slides/slide46.xml ---
+Indexes on Multiple Keys (cont’d.) Partitioned hashing If  Dno  and Age are hashed into a 3-bit and 5-bit address respectively, we get an 8-bit bucket address.  suppose that  Dno  = 4 has a hash address ‘100’ and Age = 59 has hash address ‘10101’.  The  main drawback  of partitioned hashing is that  it cannot handle range queries  on any of the component attributes. i.e.  it is  suitable for equality  comparisons Slide 17-  46
+
+--- ppt/slides/slide47.xml ---
+Indexes on Multiple Keys (cont’d.) Grid files Array with one dimension for each search attribute Slide 17-  47
+
+--- ppt/slides/slide48.xml ---
+17.5  Other Types of Indexes Hash indexes Secondary structure for file access Uses  hashing on a search key  other than the one used for the primary data file organization Index entries of form ( K, P r ) or ( K, P ) P r : pointer to the record containing the key P :  pointer to the block containing the record for that key. The index file with these index entries can be organized as a dynamically expand- able hash file  Slide 17-  48
+
+--- ppt/slides/slide49.xml ---
+Hash Indexes (cont’d.) Slide 17- 49
+
+--- ppt/slides/slide50.xml ---
+Bitmap Indexes Used with a large number of rows Creates an index  for one or more  columns Each value or value range in the column is indexed Built on  one particular value  of a particular field Array of bits when records are deleted, renumbering rows and shifting bits in bitmaps becomes expensive.  Slide 17-  50
+
+--- ppt/slides/slide51.xml ---
+Bitmap Indexes Slide 17-  51
+
+--- ppt/slides/slide52.xml ---
+Bitmap Indexes Existence bitmap To avoid bitmap expense This bitmap  has a 0 bit  for the rows that have been  deleted but are still physically present  and a 1 bit for rows that actually exist. Bitmaps for B+ -tree leaf nodes When the B+-tree is built on a non-key search field, the leaf record must contain a list of record pointers alongside each value of the indexed attribute.  For values that occur very frequently, that is, in a large percentage of the relation, a  bitmap index  may be stored  instead of the pointers .  Slide 17-  52
+
+--- ppt/slides/slide53.xml ---
+Function-Based Indexing Value resulting from applying some function on a field (or fields) becomes the index key Introduced in Oracle relational DBMS Example Function UPPER(Lname) returns uppercase representation Query  Slide 17-  53
+
+--- ppt/slides/slide54.xml ---
+17.6 Some General Issues Concerning Indexing Slide 16-  54
+
+--- ppt/slides/slide55.xml ---
+17.6  Some General Issues Concerning Indexing Physical index Pointer specifies physical record address Disadvantage : pointer must be changed if record is moved. Logical index Used when physical record addresses expected to change frequently. Entries of the form ( K,  K p ) K  is the secondary indexing field matched with the value  K p   of the field used for the primary file organization.  Slide 17-  55
+
+--- ppt/slides/slide56.xml ---
+Index Creation General form of the command to create an index Unique  and  cluster   keywords optional Order  can be ASC or DESC Example: CREATE INDEX  DnoIndex   ON EMPLOYEE ( Dno )  CLUSTER ;  Slide 17-  56
+
+--- ppt/slides/slide57.xml ---
+Index Creation Secondary indexes can be created for any primary record organization at least theoretically Complements other primary access methods. Insertion of a large number of entries into the index is done by a process called  bulk loading  the index.  Slide 17-  57
+
+--- ppt/slides/slide58.xml ---
+Indexing of Strings Strings can be  variable length Strings may be  too long , limiting the fan-out Prefix compression Stores only the  prefix of the search key  adequate to distinguish the keys that are being separated and directed to the subtree. Slide 17-  58
+
+--- ppt/slides/slide59.xml ---
+Tuning Indexes Tuning goals Dynamically evaluate requirements. Reorganize indexes to yield best performance. Reasons for revising initial index choice  Certain queries may take too long to run due to lack of an index. Certain indexes may not get utilized. Certain indexes may undergo too much updating if based on an attribute that undergoes frequent changes. Slide 17-  59
+
+--- ppt/slides/slide60.xml ---
+Additional Issues Related to Storage of Relations and Indexes Enforcing a key constraint on an attribute Reject insertion if new record has same key attribute as existing record Duplicates occur if index is created on a nonkey field Fully inverted file Has secondary index on every field Indexing hints in queries Suggestions used to expedite query execution Slide 17-  60
+
+--- ppt/slides/slide61.xml ---
+Additional Issues Related to Storage of Relations and Indexes (cont’d.) Column-based storage of relations Alternative to traditional way of storing relations by row. Vertically partitioning the table column by column, so that a two-column table can be constructed for every attribute and thus only the needed columns can be accessed. Offers advantages for read-only queries. as in data warehouses which is a read only databases. Offers additional freedom in index creation. Slide 17-  61
+
+--- ppt/slides/slide62.xml ---
+17.7 Physical Database Design in Relational Databases Slide 8-  62
+
+--- ppt/slides/slide63.xml ---
+17.7 Physical Database Design in Relational Databases Physical design goals Create appropriate structure for data in storage Guarantee good performance Must know  job mix  for particular set of database system applications. the mix of queries, transactions, and applications that are expected to run on the database  Analyzing the  database queries  and transactions Information about each  retrieval query Information about each  update transaction Slide 17-  63
+
+--- ppt/slides/slide64.xml ---
+Physical Database Design in Relational Databases (cont’d.) Analyzing the  expected frequency of invocation  of queries and transactions Expected frequency of using each attribute as a selection or join attribute Informal 80-20 rule : 80 percent of processing accounted for by only 20 percent of queries and transactions. Analyzing the  time constraints  of queries and transactions Selection attributes associated with time constraints are candidates for primary access structures Slide 17-  64
+
+--- ppt/slides/slide65.xml ---
+Physical Database Design in Relational Databases (cont’d.) Analyzing the  expected frequency of update  operations Minimize number of access paths for a frequently-updated file Updating the access paths themselves slows down update operations Analyzing the  uniqueness constraints  on attributes Access paths should be specified on all  candidate key  attributes that are either the primary key of a file or unique attributes Slide 17-  65
+
+--- ppt/slides/slide66.xml ---
+Physical Database Design Decisions Design decisions about indexing Whether to index an attribute Attribute is a key or used by a query What attribute(s) to index on Single or multiple Whether to set up a clustered index One per table Whether to use a hash index over a tree index Hash indexes do not support range queries Whether to use dynamic hashing Appropriate for very volatile files Slide 17-  66
+
+--- ppt/slides/slide67.xml ---
+17.8 Summary Indexes are access structures that improve efficiency of record retrieval from a data file Ordered single-level index types Primary, clustering, and secondary Multilevel indexes can be implemented as B-trees and B+ -trees Dynamic structures Multiple key access methods Logical and physical indexes Slide 17-  67

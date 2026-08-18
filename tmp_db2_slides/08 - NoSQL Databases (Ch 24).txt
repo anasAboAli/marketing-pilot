@@ -1,0 +1,162 @@
+
+--- ppt/slides/slide1.xml ---
+Chapter 08 NOSQL Databases and Big Data Storage Systems Part 04 B+-Tree Example Lecturer:  Dr. Iyad  Husni   Alshami
+
+--- ppt/slides/slide2.xml ---
+CHAPTER 24 NOSQL Databases and Big Data Storage Systems Copyright © 2016  Ramez   Elmasri  and  Shamkant  B.  Navathe Modified by:  Iyad   Alshami Slide 23-  2
+
+--- ppt/slides/slide3.xml ---
+Types of Data Data can be broadly classified into four types: Structured Data:  Have a predefined model, which organizes data into a form that is relatively easy to store, process,  retrieve and manage E.g., relational data Unstructured Data: Opposite of structured data E.g., Flat binary files containing text, video or audio Note : data is not completely devoid of a structure  e.g., an audio file may still have an encoding structure and some metadata associated with it) Slide 23-  3
+
+--- ppt/slides/slide4.xml ---
+Types of Data Data can be broadly classified into four types: Dynamic Data:  Data that changes relatively frequently E.g., office documents and transactional entries in a financial database Static Data: Opposite of dynamic data E.g., Medical imaging data from MRI or CT scans Slide 23-  4
+
+--- ppt/slides/slide5.xml ---
+Why Classifying Data? Segmenting data into one of the following 4 quadrants  can help in   designing  and  developing  a pertaining  storage   solution   Relational databases are usually used for structured data File systems or  NoSQL databases  can be used for (static), unstructured data ( more on these later ) Media Production,  eCAD ,  mCAD , Office Docs Media Archive, Broadcast, Medical Imaging Transaction Systems, ERP, CRM BI, Data Warehousing Dynamic Unstructured Structured Static Slide 23-  5
+
+--- ppt/slides/slide6.xml ---
+Introduction NOSQL or Not only SQL Most NOSQL systems are  distributed databases  or  distributed storage  systems Focus on semi-structured data storage, high performance, availability, data replication, and scalability Slide 24-  6
+
+--- ppt/slides/slide7.xml ---
+Introduction (cont’d.) NOSQL systems focus on storage of “ big data ” Typical applications that use NOSQL Social media Web links User profiles Marketing and sales Posts and tweets Road maps and spatial data Email Slide 24-  7
+
+--- ppt/slides/slide8.xml ---
+24.1 Introduction to NOSQL Systems BigTable Google’s proprietary NOSQL system Column-based or wide column store DynamoDB  (Amazon) Key-value data store Cassandra (Facebook) Uses concepts from both key-value store and column-based systems Slide 24-  8
+
+--- ppt/slides/slide9.xml ---
+Introduction to NOSQL Systems (cont’d.) MongoDB and CouchDB Document stores Neo4J and GraphBase Graph-based NOSQL systems OrientDB Combines several concepts Database systems classified on the object model Or native XML model Slide 24-  9
+
+--- ppt/slides/slide10.xml ---
+Introduction to NOSQL Systems (cont’d.) NOSQL characteristics related to distributed databases and distributed systems Scalability Availability ,  replication , and  eventual consistency Replication models Master-slave Master-master Sharding of files High performance data access Slide 24-  10
+
+--- ppt/slides/slide11.xml ---
+Introduction to NOSQL Systems (cont’d.) NOSQL characteristics  related to data models  and  query languages Schema  not required Less powerful  query languages Versioning Slide 24-  11
+
+--- ppt/slides/slide12.xml ---
+Introduction to NOSQL Systems (cont’d.) Categories of NOSQL systems Document-based NOSQL systems NOSQL key-value stores Column-based or wide column NOSQL systems Graph-based NOSQL systems Hybrid NOSQL systems Object databases XML databases Slide 24-  12
+
+--- ppt/slides/slide13.xml ---
+24.2 The CAP Theorem Various levels of consistency among replicated data items Enforcing serializabilty the strongest form of consistency High overhead – can reduce read/write operation performance CAP theorem Consistency ,  availability , and  partition tolerance Not possible to guarantee all three simultaneously In distributed system with data replication Slide 24-  13
+
+--- ppt/slides/slide14.xml ---
+The CAP Theorem (cont’d.) Designer can choose two of three to guarantee Weaker   consistency   level   is often acceptable  in  NOSQL distributed data store Guaranteeing   availability   and   partition tolerance  more important . Eventual consistency  often adopted Slide 24-  14
+
+--- ppt/slides/slide15.xml ---
+Types of NoSQL Databases Here is a limited taxonomy of NoSQL databases: NoSQL Databases Document Stores Graph Databases Key-Value Stores Columnar Databases
+
+--- ppt/slides/slide16.xml ---
+Document Stores Documents  are stored in some standard format or encoding  e.g.,  XML ,  JSON ,  PDF  or Office Documents these are typically referred to as BLOBs Documents  can be indexed This allows document stores to  outperform  traditional file systems. E.g.,  MongoDB  and  CouchDB   both can be queried using  MapReduce
+
+--- ppt/slides/slide17.xml ---
+Types of NoSQL Databases Here is a limited taxonomy of NoSQL databases: NoSQL Databases Document Stores Graph Databases Key-Value Stores Columnar Databases
+
+--- ppt/slides/slide18.xml ---
+Graph Databases Data are represented as  vertices  and  edges Graph databases are powerful for  graph-like  queries  e.g., find the shortest path between two elements E.g.,  Neo4j  and  VertexDB Id: 1 Name: Alice Age: 18 Id: 2 Name: Bob Age: 22 Id: 3 Name: Chess Type: Group Id:100 Label: knows Since: 2001/10/03 Id:101 Label: knows Since: 2001/10/03 Id:103 Label: Members Id:104 Label: Members Id:105 Label:  is_member Since: 2011/02/14 Id:102 Label:  is_member Since: 2005/07/01
+
+--- ppt/slides/slide19.xml ---
+Types of NoSQL Databases Here is a limited taxonomy of NoSQL databases: NoSQL Databases Document Stores Graph Databases Key-Value Stores Columnar Databases
+
+--- ppt/slides/slide20.xml ---
+Key-Value Stores Keys are  mapped to  (possibly) more  complex value  e.g., lists Keys can be  stored in a hash table  and can be  distributed easily Such stores typically  support  regular  CRUD  operations CRUD: create, read, update, and delete That is,  no joins  and  no   aggregate  functions E.g., Amazon  DynamoDB   and Apache  Cassandra
+
+--- ppt/slides/slide21.xml ---
+Types of NoSQL Databases Here is a limited taxonomy of NoSQL databases: NoSQL Databases Document Stores Graph Databases Key-Value Stores Columnar Databases
+
+--- ppt/slides/slide22.xml ---
+Columnar Databases Columnar databases are a  hybrid of  RDBMS  and  Key-Value   stores Values are stored in groups of zero or more columns, but in Column-Order (as opposed to Row-Order) Values are  queried  by matching keys E.g.,  HBase   and  Vertica Alice 3 25 Bob 4 19 Carol 0 45 Record 1 Row-Order Alice 3 25 Bob 4 19 Carol 0 45 Column A Columnar (or Column-Order) Alice 3 25 Bob 4 19 Carol 0 45 Columnar with Locality Groups Column A = Group A Column Family {B, C}
+
+--- ppt/slides/slide23.xml ---
+24.3 Document-Based NOSQL Systems and MongoDB Document stores Collections of similar documents Individual documents resemble complex objects or XML documents Documents are self-describing Can have different data elements Documents can be specified in various formats XML JSON Slide 24-  23
+
+--- ppt/slides/slide24.xml ---
+MongoDB Data Model Documents stored in binary JSON (BSON) format Individual documents stored in a collection Example command First parameter specifies name of the collection Collection options include limits on size and number of documents Each document in collection has unique ObjectID field called _id Slide 24-  24
+
+--- ppt/slides/slide25.xml ---
+MongoDB Data Model (cont’d.) A collection does not have a schema Structure of the data fields in documents chosen based on how documents will be accessed User can choose normalized or denormalized design Document creation using insert operation Document deletion using remove operation Slide 24-  25
+
+--- ppt/slides/slide26.xml ---
+Slide 24-  26 Figure 24.1 (continues) Example of simple documents in MongoDB (a) Denormalized document design with embedded subdocuments (b) Embedded array of document references
+
+--- ppt/slides/slide27.xml ---
+Slide 24-  27 Figure 24.1 (cont’d.) Example of simple documents in MongoDB (c) Normalized documents (d) Inserting the documents in Figure 24.1(c) into their collections
+
+--- ppt/slides/slide28.xml ---
+MongoDB Distributed Systems Characteristics Two-phase commit method Used  to ensure  atomicity  and  consistency  of multi-document transactions Replication in MongoDB Concept of replica set to  create multiple copies  on different nodes Variation of  master-slave  approach Primary copy, secondary copy, and arbiter Arbiter participates in elections to select new primary if needed Slide 24-  28
+
+--- ppt/slides/slide29.xml ---
+MongoDB Distributed Systems Characteristics (cont’d.) Replication in MongoDB (cont’d.) All write operations applied to the primary copy and propagated to the secondaries User can choose read preference Read requests can be processed at any replica Sharding in MongoDB Horizontal partitioning divides the documents into disjoint partitions (shards) Allows adding more nodes as needed  Shards stored on different nodes to achieve load balancing Slide 24-  29
+
+--- ppt/slides/slide30.xml ---
+MongoDB Distributed Systems Characteristics (cont’d.) Sharding in MongoDB (cont’d.) Partitioning field (shard key) must exist in every document in the collection Must have an index Range partitioning Creates chunks by specifying a range of key values Works best with range queries Hash partitioning Partitioning based on the hash values of each shard key Slide 24-  30
+
+--- ppt/slides/slide31.xml ---
+Slide 23-  31
+
+--- ppt/slides/slide32.xml ---
+24.4 NOSQL Key-Value Stores Key-value stores focus on high performance, availability, and scalability Can store structured, unstructured, or semi-structured data Key: unique identifier associated with a data item Used for fast retrieval Value: the data item itself Can be string or array of bytes Application interprets the structure No query language Slide 24-  32
+
+--- ppt/slides/slide33.xml ---
+DynamoDB Overview DynamoDB part of Amazon’s Web Services/SDK platforms Proprietary Table holds a collection of self-describing items Item consists of attribute-value pairs Attribute values can be single or multi-valued Primary key used to locate items within a table Can be single attribute or pair of attributes Slide 24-  33
+
+--- ppt/slides/slide34.xml ---
+Voldemort Key-Value Distributed Data Store Voldemort: open source key-value system similar to DynamoDB Voldemort features Simple basic operations (get, put, and delete) High-level formatted data values Consistent hashing for distributing (key, value) pairs Consistency and versioning Concurrent writes allowed Each write associated with a vector clock Slide 24-  34
+
+--- ppt/slides/slide35.xml ---
+Slide 24-  35 Figure 24.2 Example of consistent hashing (a) Ring having three nodes A, B, and C, with C having greater capacity. The  h ( K ) values that map to the circle points in  range 1  have their (k, v) items stored in node A,  range 2  in node B,  range 3  in node C (b) Adding a node D to the ring. Items in  range 4  are moved to the node D from node B ( range 2  is reduced) and node C ( range 3  is reduced)
+
+--- ppt/slides/slide36.xml ---
+Examples of Other Key-Value Stores Oracle key-value store Oracle NOSQL Database Redis key-value cache and store Caches data in main memory to improve performance Offers master-slave replication and high availability Offers persistence by backing up cache to disk Apache Cassandra Offers features from several NOSQL categories Used by Facebook and others Slide 24-  36
+
+--- ppt/slides/slide37.xml ---
+24.5 Column-Based or Wide Column NOSQL Systems BigTable: Google’s distributed storage system for big data Used in Gmail Uses Google File System for data storage and distribution Apache Hbase a similar, open source system Uses Hadoop Distributed File System (HDFS) for data storage Can also use Amazon’s Simple Storage System (S3) Slide 24-  37
+
+--- ppt/slides/slide38.xml ---
+Hbase Data Model and Versioning Data organization concepts Namespaces Tables Column families Column qualifiers Columns Rows Data cells Data is self-describing Slide 24-  38
+
+--- ppt/slides/slide39.xml ---
+Hbase Data Model and Versioning (cont’d.) HBase stores multiple versions of data items Timestamp associated with each version Each row in a table has a unique row key Table associated with one or more column families Column qualifiers can be dynamically specified as new table rows are created and inserted Namespace is collection of tables Cell holds a basic data item Slide 24-  39
+
+--- ppt/slides/slide40.xml ---
+Slide 24-  40 Figure 24.3 Examples in Hbase (a) Creating a table called EMPLOYEE with three column families: Name, Address, and Details (b) Inserting some in the EMPLOYEE table; different rows can have different self-describing column qualifiers (Fname, Lname, Nickname, Mname, Minit, Suffix, … for column family Name; Job, Review, Supervisor, Salary for column family Details). (c) Some CRUD operations of  Hbase
+
+--- ppt/slides/slide41.xml ---
+Hbase Crud Operations Provides only low-level CRUD (create, read, update, delete) operations Application programs implement more complex operations Create Creates a new table and specifies one or more column families associated with the table Put Inserts new data or new versions of existing data items Slide 24-  41
+
+--- ppt/slides/slide42.xml ---
+Hbase Crud Operations (cont’d.) Get Retrieves data associated with a single row Scan Retrieves all the rows Slide 24-  42
+
+--- ppt/slides/slide43.xml ---
+Hbase Storage and Distributed System Concepts  Each Hbase table divided into several regions Each region holds a range   of the row keys in the table Row keys must be lexicographically ordered Each region has several stores Column families are assigned to stores Regions assigned to region servers for storage Master server responsible for monitoring the region servers Hbase uses Apache Zookeeper and HDFS Slide 24-  43
+
+--- ppt/slides/slide44.xml ---
+24.6 NOSQL Graph Databases and Neo4j Graph databases Data represented as a graph Collection of vertices (nodes) and edges Possible to store data associated with both individual nodes and individual edges Neo4j Open source system Uses concepts of nodes and relationships Slide 24-  44
+
+--- ppt/slides/slide45.xml ---
+Neo4j (cont’d.) Nodes can have labels Zero, one, or several Both nodes and relationships can have properties Each relationship has a start node, end node, and a relationship type Properties specified using a map pattern Somewhat similar to ER/EER concepts Slide 24-  45
+
+--- ppt/slides/slide46.xml ---
+Neo4j (cont’d.) Creating nodes in Neo4j CREATE command Part of high-level declarative query language Cypher Node label can be specified when node is created Properties are enclosed in curly brackets Slide 24-  46
+
+--- ppt/slides/slide47.xml ---
+Neo4j (cont’d.) Slide 24-  47 Figure 24.4 Examples in Neo4j using the Cypher language (a) Creating some nodes
+
+--- ppt/slides/slide48.xml ---
+Neo4j (cont’d.) Slide 24-  48 Figure 24.4 (cont’d.) Examples in Neo4j using the Cypher language (b) Creating some relationships
+
+--- ppt/slides/slide49.xml ---
+Neo4j (cont’d.) Path Traversal of part of the graph Typically used as part of a query to specify a pattern Schema optional in Neo4j Indexing and node identifiers Users can create for the collection of nodes that have a particular label One or more properties can be indexed Slide 24-  49
+
+--- ppt/slides/slide50.xml ---
+The Cypher Query Language of Neo4j Cypher query made up of clauses Result from one clause can be the input to the next clause in the query Slide 24-  50
+
+--- ppt/slides/slide51.xml ---
+The Cypher Query Language of Neo4j (cont’d.) Slide 24-  51 Figure 24.4 (cont’d.) Examples in Neo4j using the Cypher language (c) Basic syntax of Cypher queries
+
+--- ppt/slides/slide52.xml ---
+The Cypher Query Language of Neo4j (cont’d.) Slide 24-  52 Figure 24.4 (cont’d.) Examples in Neo4j using the Cypher language (d) Examples of Cypher queries
+
+--- ppt/slides/slide53.xml ---
+Neo4j Interfaces and Distributed System Characteristics Enterprise edition versus c ommunity edition Enterprise edition supports caching, clustering of data, and locking Graph visualization interface Subset of nodes and edges in a database graph can be displayed as a graph Used to visualize query results Master-slave replication Caching Logical logs Slide 24-  53
+
+--- ppt/slides/slide54.xml ---
+24.7 Summary NOSQL systems focus on storage of “big data” General categories Document-based Key-value stores Column-based Graph-based Some systems use techniques spanning two or more categories Consistency paradigms CAP theorem Slide 24-  54
