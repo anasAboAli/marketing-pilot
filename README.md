@@ -72,7 +72,7 @@ marketpilot/
 ├── vite.config.js
 └── README.md
 
-
+⚙️ Installation
 1. Clone the repository
 git clone https://github.com/anasAboAli/marketing-pilot.git
 2. Navigate to the project
@@ -89,7 +89,7 @@ Then import the database structure:
 
 mysql -u root -p marketpilot_db < database.sql
 
-Alternatively, the database.sql file can be imported using phpMyAdmin.
+You can also import database.sql using phpMyAdmin.
 
 🔐 Backend Environment
 
@@ -126,8 +126,34 @@ npm run dev
 The frontend will normally be available at:
 
 http://localhost:5173
+🔌 API
 
+The backend provides REST API endpoints for:
 
+Clients
+Campaigns
+Leads
+Dashboard data
+
+Example endpoints:
+
+GET    /api/clients
+GET    /api/campaigns
+GET    /api/leads
+GET    /api/dashboard
+📊 Dashboard
+
+The dashboard provides an overview of:
+
+Total revenue
+Expenses
+Net profit
+Monthly target
+Revenue by platform
+Top campaigns
+Top employees
+Recent leads
+Recent activities
 📱 Responsive Design
 
 MarketPilot is designed to work across:
@@ -161,7 +187,7 @@ Node.js + Express Backend
 MySQL Database
 👨‍💻 Author
 
-Anas
+Eng. Anas Alhirthani
 
 Frontend Developer specializing in Vue.js and modern web applications.
 
@@ -170,22 +196,15 @@ Frontend Developer specializing in Vue.js and modern web applications.
 This project is intended for portfolio and educational purposes.
 
 
----
+### 3. بعد الحفظ
 
-## 2. احفظ الملف
-
-في Notepad:
-
-**Ctrl + S**
-
-ثم أغلقه.
-
-بعدها نفّذ:
+نفّذ:
 
 ```cmd
 git status
 
-المفروض يظهر:
+ثم:
 
-Untracked files:
-    README.md
+git add README.md
+git commit -m "Add project documentation"
+git push origin main
