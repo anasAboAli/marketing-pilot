@@ -1,50 +1,130 @@
 <script setup>
-const cards = [
-  {
-    title: "إجمالي الإيرادات",
-    value: "148,250 ر.س",
-    growth: "+18%",
-  },
-  {
-    title: "إجمالي المصروف",
-    value: "84,600 ر.س",
-    growth: "+6%",
-  },
-  {
-    title: "صافي الأرباح",
-    value: "63,650 ر.س",
-    growth: "+24%",
-  },
-];
+import { onMounted, ref } from "vue";
+import api from "@/api/axios";
+import endpoints from "@/api/endpoints";
+
+const loading = ref(true);
+const error = ref("");
+
+const overview = ref({
+  totalBudget: 0,
+  totalSpent: 0,
+  netProfit: 0,
+});
+
+function formatMoney(value) {
+  return `${Number(value || 0).toLocaleString("ar-SA")} ر.س`;
+}
+
+async function loadOverview() {
+  try {
+    loading.value = true;
+    error.value = "";
+
+    const response = await api.get(endpoints.dashboardOverview);
+
+    overview.value = response.data;
+  } catch (e) {
+    error.value =
+      e.response?.data?.error || e.message || "تعذر تحميل إحصائيات لوحة التحكم";
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(loadOverview);
 </script>
 
 <template>
-  <div class="grid grid-cols-3 gap-6">
+  <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <!-- Loading -->
 
     <div
-      v-for="card in cards"
-      :key="card.title"
-      class="rounded-2xl border bg-white p-6 shadow-sm"
+      v-if="loading"
+      class="rounded-2xl border border-slate-200 bg-white p-6 text-center text-slate-500 shadow-sm md:col-span-3"
     >
-      <p class="text-slate-500">
-
-        {{ card.title }}
-
-      </p>
-
-      <h2 class="mt-4 text-3xl font-bold">
-
-        {{ card.value }}
-
-      </h2>
-
-      <span class="mt-3 inline-block rounded-full bg-green-100 px-3 py-1 text-green-700">
-
-        {{ card.growth }}
-
-      </span>
-
+      جاري تحميل الإحصائيات...
     </div>
 
+    <!-- Error -->
+
+    <div
+      v-else-if="error"
+      class="rounded-2xl bg-red-50 p-5 text-red-700 md:col-span-3"
+    >
+      {{ error }}
+    </div>
+
+    <!-- Cards -->
+
+    <template v-else>
+      <!-- Total Revenue -->
+
+      <div
+        class="parent rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
+        <p class="text-slate-500">إجمالي الإيرادات</p>
+
+        <h2 class="whenThisScreen mt-4 text-3xl font-bold">
+          {{ formatMoney(overview.totalBudget) }}
+        </h2>
+
+        <span
+          class="mt-3 inline-block rounded-full bg-blue-100 px-3 py-1 text-sm font-semibold text-blue-700"
+        >
+          إجمالي الميزانيات
+        </span>
+      </div>
+
+      <!-- Total Spent -->
+
+      <div
+        class="parent rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
+        <p class="text-slate-500">إجمالي المصروف</p>
+
+        <h2 class="whenThisScreen mt-4 text-3xl font-bold">
+          {{ formatMoney(overview.totalSpent) }}
+        </h2>
+
+        <span
+          class="mt-3 inline-block rounded-full bg-amber-100 px-3 py-1 text-sm font-semibold text-amber-700"
+        >
+          إجمالي الإنفاق
+        </span>
+      </div>
+
+      <!-- Net Profit -->
+
+      <div
+        class="parent rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+      >
+        <p class="text-slate-500">صافي الأرباح</p>
+
+        <h2 class="whenThisScreen mt-4 text-3xl font-bold">
+          {{ formatMoney(overview.netProfit) }}
+        </h2>
+
+        <span
+          class="mt-3 inline-block rounded-full bg-emerald-100 px-3 py-1 text-sm font-semibold text-emerald-700"
+        >
+          المتبقي من الميزانيات
+        </span>
+      </div>
+    </template>
   </div>
 </template>
+
+<style>
+@media (max-width: 768px) {
+  .parent {
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .whenThisScreen {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+</style>

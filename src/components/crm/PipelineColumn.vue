@@ -12,7 +12,7 @@ stage:Object,
 
 <template>
 
-<div class="rounded-2xl bg-slate-100 p-4">
+<div style="text-align: center;" class="rounded-2xl bg-slate-100 p-4">
 
 <h2 class="mb-5 text-lg font-bold">
 

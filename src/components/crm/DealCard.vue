@@ -10,7 +10,7 @@ deal:Object,
 
 <template>
 
-<div
+<div style="text-align: center; width: 100%;"
 class="mb-4 rounded-xl border bg-white p-4 shadow-sm">
 
 <h3 class="font-semibold">

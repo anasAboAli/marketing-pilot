@@ -60,8 +60,6 @@ import ClientSupport from "@/components/portal/ClientSupport.vue";
 import authGuard from "@/middleware/auth";
 import guestGuard from "@/middleware/guest";
 
-
-
 const routes = [
   {
     path: "/",
@@ -108,230 +106,230 @@ const routes = [
         component: LeadDetailsPage,
       },
       {
-  path: "analytics",
-  name: "analytics",
-  component: Analytics,
-},
-{
-  path: "reports",
-  name: "reports",
-  component: ReportsPage,
-},
-{
-  path: "team",
-  name: "team",
-  component: TeamPage,
-},
-{
-  path: "settings",
-  name: "settings",
-  component: SettingsPage,
-},
-{
-    path:"/login",
-    name:"login",
-    component:LoginPage,
-},
+        path: "analytics",
+        name: "analytics",
+        component: Analytics,
+      },
+      {
+        path: "reports",
+        name: "reports",
+        component: ReportsPage,
+      },
+      {
+        path: "team",
+        name: "team",
+        component: TeamPage,
+      },
+      {
+        path: "settings",
+        name: "settings",
+        component: SettingsPage,
+      },
+      {
+        path: "/login",
+        name: "login",
+        component: LoginPage,
+      },
 
-{
-    path:"/forgot-password",
-    name:"forgot-password",
-    component:ForgotPasswordPage,
-},
-{
-path:"profile",
-component:ProfilePage,
-},
+      {
+        path: "/forgot-password",
+        name: "forgot-password",
+        component: ForgotPasswordPage,
+      },
+      {
+        path: "profile",
+        component: ProfilePage,
+      },
 
-{
-path:"notifications",
-component:NotificationsPage,
-},
+      {
+        path: "notifications",
+        component: NotificationsPage,
+      },
 
-{
-path:"/:pathMatch(.*)*",
-component:NotFoundPage,
-},
-{
-path:"users",
-component:UsersPage,
-},
+      
+      {
+        path: "users",
+        component: UsersPage,
+      },
 
-{
-path:"users/create",
-component:CreateUserPage,
-},
+      {
+        path: "users/create",
+        component: CreateUserPage,
+      },
 
-{
-path:"users/:id",
-component:UserDetailsPage,
-},
-{
-  path: "crm/pipeline",
-  component: PipelinePage,
-},
-{
-  path: "crm/opportunities",
-  component: OpportunitiesPage,
-},
-{
-  path: "crm/activities",
-  component: ActivitiesPage,
-},
-{
-  path: "crm/notes",
-  component: NotesPage,
-},
-{
-path:"automation",
-component:AutomationPage,
-},
+      {
+        path: "users/:id",
+        component: UserDetailsPage,
+      },
+      {
+        path: "crm/pipeline",
+        component: PipelinePage,
+      },
+      {
+        path: "crm/opportunities",
+        component: OpportunitiesPage,
+      },
+      {
+        path: "crm/activities",
+        component: ActivitiesPage,
+      },
+      {
+        path: "crm/notes",
+        component: NotesPage,
+      },
+      {
+        path: "automation",
+        component: AutomationPage,
+      },
 
-{
-path:"automation/emails",
-component:EmailCampaignsPage,
-},
+      {
+        path: "automation/emails",
+        component: EmailCampaignsPage,
+      },
 
-{
-path:"automation/sms",
-component:SmsCampaignsPage,
-},
+      {
+        path: "automation/sms",
+        component: SmsCampaignsPage,
+      },
 
-{
-path:"automation/templates",
-component:TemplatesPage,
-},
+      {
+        path: "automation/templates",
+        component: TemplatesPage,
+      },
 
-{
-path:"automation/segments",
-component:SegmentsPage,
-},
-{
-path:"campaign-builder",
-component:CampaignBuilderPage,
-},
-{
-path:"social",
-component:SocialDashboardPage,
-},
+      {
+        path: "automation/segments",
+        component: SegmentsPage,
+      },
+      {
+        path: "campaign-builder",
+        component: CampaignBuilderPage,
+      },
+      {
+        path: "social",
+        component: SocialDashboardPage,
+      },
 
-{
-path:"social/calendar",
-component:CalendarPage,
-},
+      {
+        path: "social/calendar",
+        component: CalendarPage,
+      },
 
-{
-path:"social/posts",
-component:PostsPage,
-},
+      {
+        path: "social/posts",
+        component: PostsPage,
+      },
 
-{
-path:"social/posts/create",
-component:CreatePostPage,
-},
+      {
+        path: "social/posts/create",
+        component: CreatePostPage,
+      },
 
-{
-path:"social/media",
-component:MediaLibraryPage,
-},
+      {
+        path: "social/media",
+        component: MediaLibraryPage,
+      },
 
-{
-path:"social/channels",
-component:ChannelsPage,
-},
+      {
+        path: "social/channels",
+        component: ChannelsPage,
+      },
 
-{
-path:"social/analytics",
-component:AnalyticsPage,
-},
+      {
+        path: "social/analytics",
+        component: AnalyticsPage,
+      },
 
-{
-path:"social/hashtags",
-component:HashtagsPage,
-},
-{
-path:"ai",
-component:AiDashboardPage,
-},
-{
-path:"ai/content",
-component:ContentGeneratorPage,
-},
-{
-path:"ai/ad-copy",
-component:AdCopyPage,
-},
-{
-path:"ai/seo",
-component:SeoAssistantPage,
-},
-{
-path:"ai/keywords",
-component:KeywordResearchPage,
-},
-{
-path:"ai/landing-page",
-component:LandingPageGenerator,
-},
-{
-path:"ai/audience",
-component:AudienceInsightsPage,
-},
-{
-path:"ai/email",
-component:EmailWriterPage,
-},
-{
-path:"ai/image-ideas",
-component:ImageIdeasPage,
-},
-{
-path:"workspace",
-component:WorkspacesPage,
-},
+      {
+        path: "social/hashtags",
+        component: HashtagsPage,
+      },
+      {
+        path: "ai",
+        component: AiDashboardPage,
+      },
+      {
+        path: "ai/content",
+        component: ContentGeneratorPage,
+      },
+      {
+        path: "ai/ad-copy",
+        component: AdCopyPage,
+      },
+      {
+        path: "ai/seo",
+        component: SeoAssistantPage,
+      },
+      {
+        path: "ai/keywords",
+        component: KeywordResearchPage,
+      },
+      {
+        path: "ai/landing-page",
+        component: LandingPageGenerator,
+      },
+      {
+        path: "ai/audience",
+        component: AudienceInsightsPage,
+      },
+      {
+        path: "ai/email",
+        component: EmailWriterPage,
+      },
+      {
+        path: "ai/image-ideas",
+        component: ImageIdeasPage,
+      },
+      {
+        path: "workspace",
+        component: WorkspacesPage,
+      },
 
-{
-path:"workspace/members",
-component:MembersPage,
-},
+      {
+        path: "workspace/members",
+        component: MembersPage,
+      },
 
-{
-path:"workspace/roles",
-component:RolesPage,
-},
+      {
+        path: "workspace/roles",
+        component: RolesPage,
+      },
 
-{
-path:"workspace/permissions",
-component:PermissionsPage,
-},
+      {
+        path: "workspace/permissions",
+        component: PermissionsPage,
+      },
 
-{
-path:"workspace/billing",
-component:BillingPage,
-},
-{
-path:"portal",
-component:PortalDashboard,
-},
+      {
+        path: "workspace/billing",
+        component: BillingPage,
+      },
+      {
+        path: "portal",
+        component: PortalDashboard,
+      },
 
-{
-path:"portal/campaigns",
-component:ClientCampaigns,
-},
+      {
+        path: "portal/campaigns",
+        component: ClientCampaigns,
+      },
 
-{
-path:"portal/invoices",
-component:ClientInvoices,
-},
+      {
+        path: "portal/invoices",
+        component: ClientInvoices,
+      },
 
-{
-path:"portal/support",
-component:ClientSupport,
-},
-
+      {
+        path: "portal/support",
+        component: ClientSupport,
+      },
     ],
   },
-  
+  {
+    path: "/:pathMatch(.*)*",
+    name: "not-found",
+    component: NotFoundPage,
+  },
 ];
 
 const router = createRouter({
@@ -340,7 +338,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  if (to.path === "/login" || to.path === "/forgot-password") return guestGuard(to);
+  if (to.path === "/login" || to.path === "/forgot-password")
+    return guestGuard(to);
   return authGuard(to);
 });
 

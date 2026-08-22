@@ -25,5 +25,41 @@
     "status": "نشط",
     "campaigns": 0,
     "revenue": "0 ر.س"
+  },
+  {
+    "id": 4,
+    "name": "kj",
+    "industry": "67",
+    "manager": "jh",
+    "status": "نشط",
+    "campaigns": 0,
+    "revenue": "0 ر.س"
+  },
+  {
+    "id": 5,
+    "name": "23423",
+    "industry": "234234",
+    "manager": "234234",
+    "status": "نشط",
+    "campaigns": 0,
+    "revenue": "0 ر.س"
+  },
+  {
+    "id": 6,
+    "name": "324",
+    "industry": "324",
+    "manager": "234",
+    "status": "نشط",
+    "campaigns": 0,
+    "revenue": "0 ر.س"
+  },
+  {
+    "id": 7,
+    "name": "few23",
+    "industry": "fewf",
+    "manager": "feds",
+    "status": "نشط",
+    "campaigns": 0,
+    "revenue": "0 ر.س"
   }
 ]

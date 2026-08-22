@@ -1,6 +1,8 @@
 export default{
 
 dashboard:"/dashboard",
+dashboardOverview: "/dashboard/overview",
+dashboardRevenueByPlatform: "/dashboard/revenue-by-platform",
 
 campaigns:"/campaigns",
 

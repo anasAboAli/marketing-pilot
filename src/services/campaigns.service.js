@@ -1,27 +1,52 @@
-export default{
+import api from "@/api/axios";
+import endpoints from "@/api/endpoints";
 
-getAll(){
+export default {
+  async getAll() {
+    const response = await api.get(endpoints.campaigns);
 
-return Promise.resolve([]);
+    return response.data;
+  },
 
-},
+  async getById(id) {
+    const response = await api.get(
+      `${endpoints.campaigns}/${id}`
+    );
 
-create(data){
+    return response.data;
+  },
 
-return Promise.resolve(data);
+  async create(data) {
+    const response = await api.post(
+      endpoints.campaigns,
+      data
+    );
 
-},
+    return response.data;
+  },
 
-update(id,data){
+  async update(id, data) {
+    const response = await api.put(
+      `${endpoints.campaigns}/${id}`,
+      data
+    );
 
-return Promise.resolve(data);
+    return response.data;
+  },
 
-},
+  async delete(id) {
+    const response = await api.delete(
+      `${endpoints.campaigns}/${id}`
+    );
 
-delete(id){
+    return response.data;
+  },
 
-return Promise.resolve();
+  async getByClientId(clientId) {
+    const response = await api.get(
+      `${endpoints.campaigns}/client/${clientId}`
+    );
 
-}
-
-}
+    return response.data;
+  },
+};

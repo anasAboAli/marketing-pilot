@@ -30,22 +30,18 @@ const leads = [
 <template>
   <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
     <div class="border-b border-slate-200 p-6">
-      <h3 class="text-lg font-semibold text-slate-900">
-        Recent Leads
-      </h3>
+      <h3 class="text-lg font-semibold text-slate-900">Recent Leads</h3>
 
-      <p class="mt-1 text-sm text-slate-500">
-        Latest customer leads
-      </p>
+      <p class="mt-1 text-sm text-slate-500">Latest customer leads</p>
     </div>
 
     <table class="w-full">
       <thead>
-        <tr class="text-left text-sm text-slate-500">
-          <th class="p-4">Lead</th>
-          <th>Company</th>
-          <th>Status</th>
-          <th>Value</th>
+        <tr class="text-right text-sm text-slate-500">
+          <th class="p-4">القائد</th>
+          <th>الشركة</th>
+          <th>الحالة</th>
+          <th>القيمة</th>
         </tr>
       </thead>
 

@@ -1,2 +1,48 @@
-const base = "http://localhost:3001/api/clients";
-export default { async getAll() { const response = await fetch(base); if (!response.ok) throw new Error("تعذر تحميل العملاء"); return response.json(); }, async create(payload) { const response = await fetch(base, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }); if (!response.ok) throw new Error("تعذر إضافة العميل"); return response.json(); } };
+import api from "@/api/axios";
+import endpoints from "@/api/endpoints";
+
+export default {
+  async getAll() {
+    const response = await api.get(
+      endpoints.clients
+    );
+
+    return response.data;
+  },
+
+  async getById(id) {
+    const response = await api.get(
+      `${endpoints.clients}/${id}`
+    );
+
+    return response.data;
+  },
+
+  async create(data) {
+    const response = await api.post(
+      endpoints.clients,
+      data
+    );
+
+    return response.data;
+  },
+
+  async update(id, data) {
+    const response = await api.put(
+      `${endpoints.clients}/${id}`,
+      data
+    );
+
+    return response.data;
+  },
+
+  async delete(id) {
+    const response = await api.delete(
+      `${endpoints.clients}/${id}`
+    );
+
+    return response.data;
+  },
+
+  
+};
