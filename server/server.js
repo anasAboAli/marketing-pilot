@@ -13,7 +13,10 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+      "https://market-pilot-fullstack.netlify.app",
+    ],
   })
 );
 
@@ -34,8 +37,6 @@ app.use("/api/campaigns", campaignsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 // Start server
-app.listen(PORT, () => {
-  console.log(
-    `MarketPilot API running on http://localhost:${PORT}`
-  );
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`MarketPilot API running on port ${PORT}`);
 });
