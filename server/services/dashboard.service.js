@@ -50,3 +50,22 @@ export async function getMonthlyRevenue() {
     totalSpent: Number(row.total_spent || 0),
   }));
 }
+
+export async function getTopEmployees() {
+  const [rows] = await db.query(`
+    SELECT
+      assigned_to AS name,
+      COALESCE(SUM(value), 0) AS total_value
+    FROM leads
+    WHERE assigned_to IS NOT NULL
+      AND assigned_to != ''
+    GROUP BY assigned_to
+    ORDER BY total_value DESC
+    LIMIT 5
+  `);
+
+  return rows.map((row) => ({
+    name: row.name,
+    totalValue: Number(row.total_value || 0),
+  }));
+}

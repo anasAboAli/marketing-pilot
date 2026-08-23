@@ -3,6 +3,7 @@ import {
   getDashboardOverview,
   getRevenueByPlatform,
   getMonthlyRevenue,
+  getTopEmployees,
 } from "../services/dashboard.service.js";
 
 const router = express.Router();
@@ -48,6 +49,20 @@ router.get("/monthly-revenue", async (req, res) => {
 
     res.status(500).json({
       error: "Failed to load monthly revenue",
+    });
+  }
+});
+
+router.get("/top-employees", async (req, res) => {
+  try {
+    const data = await getTopEmployees();
+
+    res.json(data);
+  } catch (error) {
+    console.error("GET /dashboard/top-employees:", error);
+
+    res.status(500).json({
+      error: "Failed to load top employees",
     });
   }
 });
