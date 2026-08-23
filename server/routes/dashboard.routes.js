@@ -4,6 +4,7 @@ import {
   getRevenueByPlatform,
   getMonthlyRevenue,
   getTopEmployees,
+  getTopCampaigns,
 } from "../services/dashboard.service.js";
 
 const router = express.Router();
@@ -63,6 +64,20 @@ router.get("/top-employees", async (req, res) => {
 
     res.status(500).json({
       error: "Failed to load top employees",
+    });
+  }
+});
+
+router.get("/top-campaigns", async (req, res) => {
+  try {
+    const data = await getTopCampaigns();
+
+    res.json(data);
+  } catch (error) {
+    console.error("GET /dashboard/top-campaigns:", error);
+
+    res.status(500).json({
+      error: "Failed to load top campaigns",
     });
   }
 });
