@@ -8,7 +8,8 @@
     "server": "node server/server.js",
     "dev:full": "node server/server.js & vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node server/server.js"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",

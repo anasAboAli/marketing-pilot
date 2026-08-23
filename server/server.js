@@ -13,10 +13,8 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://market-pilot-fullstack.netlify.app",
-    ],
+    origin: true,
+    credentials: true,
   })
 );
 
