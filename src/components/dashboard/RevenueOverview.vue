@@ -63,7 +63,7 @@ onMounted(loadOverview);
       <div
         class="parent rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
       >
-        <p class="text-slate-500">إجمالي الإيرادات</p>
+        <p class="text-slate-500">إجمالي الميزانيات</p>
 
         <h2 class="whenThisScreen mt-4 text-3xl font-bold">
           {{ formatMoney(overview.totalBudget) }}
@@ -99,7 +99,7 @@ onMounted(loadOverview);
       <div
         class="parent rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
       >
-        <p class="text-slate-500">صافي الأرباح</p>
+        <p class="text-slate-500">المتبقي من الميزانيات</p>
 
         <h2 class="whenThisScreen mt-4 text-3xl font-bold">
           {{ formatMoney(overview.netProfit) }}

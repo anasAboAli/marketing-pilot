@@ -2,6 +2,7 @@ import express from "express";
 import {
   getDashboardOverview,
   getRevenueByPlatform,
+  getMonthlyRevenue,
 } from "../services/dashboard.service.js";
 
 const router = express.Router();
@@ -33,6 +34,20 @@ router.get("/revenue-by-platform", async (req, res) => {
 
     res.status(500).json({
       error: "Failed to load revenue by platform",
+    });
+  }
+});
+
+router.get("/monthly-revenue", async (req, res) => {
+  try {
+    const data = await getMonthlyRevenue();
+
+    res.json(data);
+  } catch (error) {
+    console.error("GET /dashboard/monthly-revenue:", error);
+
+    res.status(500).json({
+      error: "Failed to load monthly revenue",
     });
   }
 });

@@ -33,3 +33,20 @@ export async function getRevenueByPlatform() {
     totalSpent: Number(row.total_spent || 0),
   }));
 }
+
+export async function getMonthlyRevenue() {
+  const [rows] = await db.query(`
+    SELECT
+      DATE_FORMAT(start_date, '%Y-%m') AS month,
+      COALESCE(SUM(spent), 0) AS total_spent
+    FROM campaigns
+    WHERE start_date IS NOT NULL
+    GROUP BY DATE_FORMAT(start_date, '%Y-%m')
+    ORDER BY month ASC
+  `);
+
+  return rows.map((row) => ({
+    month: row.month,
+    totalSpent: Number(row.total_spent || 0),
+  }));
+}
