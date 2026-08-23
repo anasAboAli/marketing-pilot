@@ -21,7 +21,6 @@ export async function initializeDatabase() {
   const connection = await mysql.createConnection(connectionConfig);
 
   try {
-    // Check if the required tables already exist
     const [tables] = await connection.query(
       `
       SELECT COUNT(*) AS count
