@@ -1,86 +1,106 @@
 <script setup>
+import { onMounted, ref } from "vue";
+import api from "@/api/axios";
+import endpoints from "@/api/endpoints";
 
-const data=[
+const data = ref([]);
+const loading = ref(true);
+const error = ref("");
 
-{
+function formatMoney(value) {
+  return `${Number(value || 0).toLocaleString("ar-SA")} ر.س`;
+}
 
-title:"Google Ads",
+function getPercentage(value) {
+  const maxValue = Math.max(
+    ...data.value.map((item) => Number(item.totalSpent || 0)),
+    0
+  );
 
-value:"48,000 ر.س",
+  if (maxValue === 0) {
+    return 0;
+  }
 
-},
+  return Math.round((Number(value || 0) / maxValue) * 100);
+}
 
-{
+async function loadRevenueByPlatform() {
+  try {
+    loading.value = true;
+    error.value = "";
 
-title:"Meta Ads",
+    const response = await api.get(
+      endpoints.dashboardRevenueByPlatform
+    );
 
-value:"39,500 ر.س",
+    data.value = response.data || [];
+  } catch (e) {
+    console.error("Failed to load revenue by platform:", e);
 
-},
+    error.value =
+      e.response?.data?.error ||
+      e.message ||
+      "تعذر تحميل بيانات المنصات";
+  } finally {
+    loading.value = false;
+  }
+}
 
-{
-
-title:"TikTok Ads",
-
-value:"27,000 ر.س",
-
-},
-
-{
-
-title:"Snapchat",
-
-value:"18,300 ر.س",
-
-},
-
-];
-
+onMounted(loadRevenueByPlatform);
 </script>
 
 <template>
+  <div class="rounded-2xl border bg-white p-6 shadow-sm">
+    <h2 class="mb-6 text-xl font-bold">
+      الإنفاق حسب المنصة
+    </h2>
 
-<div class="rounded-2xl border bg-white p-6 shadow-sm">
+    <div
+      v-if="loading"
+      class="py-10 text-center text-slate-500"
+    >
+      جاري تحميل البيانات...
+    </div>
 
-<h2 class="mb-6 text-xl font-bold">
+    <div
+      v-else-if="error"
+      class="rounded-xl bg-red-50 p-4 text-red-700"
+    >
+      {{ error }}
+    </div>
 
-الإيرادات حسب المنصة
+    <div
+      v-else-if="data.length === 0"
+      class="py-10 text-center text-slate-500"
+    >
+      لا توجد بيانات متاحة
+    </div>
 
-</h2>
+    <template v-else>
+      <div
+        v-for="item in data"
+        :key="item.platform"
+        class="mb-6 last:mb-0"
+      >
+        <div class="mb-2 flex justify-between">
+          <span>
+            {{ item.platform }}
+          </span>
 
-<div
-v-for="item in data"
-:key="item.title"
-class="mb-6">
+          <span>
+            {{ formatMoney(item.totalSpent) }}
+          </span>
+        </div>
 
-<div class="mb-2 flex justify-between">
-
-<span>
-
-{{ item.title }}
-
-</span>
-
-<span>
-
-{{ item.value }}
-
-</span>
-
-</div>
-
-<div class="h-2 rounded-full bg-slate-100">
-
-<div
-class="h-2 rounded-full bg-blue-600"
-style="width:70%">
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+        <div class="h-2 rounded-full bg-slate-100">
+          <div
+            class="h-2 rounded-full bg-blue-600 transition-all"
+            :style="{
+              width: `${getPercentage(item.totalSpent)}%`,
+            }"
+          ></div>
+        </div>
+      </div>
+    </template>
+  </div>
 </template>
