@@ -6,6 +6,9 @@ import leadsRoutes from "./routes/leads.routes.js";
 import campaignsRoutes from "./routes/campaigns.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 
+
+import { initializeDatabase } from "./db/initDatabase.js";
+
 const app = express();
 
 const PORT = process.env.PORT || 3001;
@@ -35,6 +38,17 @@ app.use("/api/campaigns", campaignsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 
 // Start server
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`MarketPilot API running on port ${PORT}`);
-});
+async function startServer() {
+  try {
+    await initializeDatabase();
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`MarketPilot API running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to initialize database:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
