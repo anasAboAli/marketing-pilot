@@ -1,279 +1,259 @@
 <script setup>
+import { onMounted, ref } from "vue";
+import api from "@/api/axios";
+import endpoints from "@/api/endpoints";
 
-const campaigns = [
-  {
-    name: "حملة الصيف",
-    client: "شركة الريادة العقارية",
-    platform: "Google Ads",
-    budget: "15,000 ر.س",
-    status: "نشطة",
-    roas: "4.8x",
-  },
-  {
-    name: "حملة العودة للمدارس",
-    client: "متجر الأناقة",
-    platform: "Meta Ads",
-    budget: "9,500 ر.س",
-    status: "نشطة",
-    roas: "3.6x",
-  },
-  {
-    name: "حملة الخدمات الطبية",
-    client: "عيادات النخبة",
-    platform: "Google Ads",
-    budget: "12,000 ر.س",
-    status: "مكتملة",
-    roas: "5.2x",
-  },
-  {
-    name: "حملة السفر الصيفية",
-    client: "شركة السفر الذكي",
-    platform: "TikTok Ads",
-    budget: "7,000 ر.س",
-    status: "متوقفة",
-    roas: "2.4x",
-  },
-];
+const campaigns = ref([]);
+const loading = ref(true);
+const error = ref("");
+
+function formatMoney(value) {
+  return `${Number(value || 0).toLocaleString("ar-SA")} ر.س`;
+}
+
+async function loadTopCampaigns() {
+  try {
+    loading.value = true;
+    error.value = "";
+
+    const response = await api.get(endpoints.dashboardTopCampaigns);
+
+    campaigns.value = response.data;
+  } catch (e) {
+    error.value =
+      e.response?.data?.error ||
+      e.message ||
+      "تعذر تحميل أفضل الحملات";
+  } finally {
+    loading.value = false;
+  }
+}
+
+onMounted(loadTopCampaigns);
 </script>
 
 <template>
   <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
 
     <div class="border-b border-slate-200 p-6">
-
       <h3 class="text-lg font-semibold">
-
         أفضل الحملات
-
       </h3>
 
       <p class="mt-1 text-sm text-slate-500">
-
         ملخص أداء أهم الحملات الإعلانية
-
       </p>
-
     </div>
 
-
-
-
-    <!-- ========================= -->
-    <!-- Desktop / Tablet Table -->
-    <!-- ========================= -->
+    <!-- Loading -->
 
     <div
-      class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block"
+      v-if="loading"
+      class="p-8 text-center text-slate-500"
     >
-      <table class="w-full">
-        <thead class="bg-slate-50">
-          <tr>
-            <th class="p-4 text-right lg:p-5">اسم الحملة</th>
-
-            <th class="p-4 text-right lg:p-5">العميل</th>
-
-            <th class="p-4 text-right lg:p-5">المنصة</th>
-
-            <th class="p-4 text-right lg:p-5">الميزانية</th>
-
-            <th class="p-4 text-right lg:p-5">الحالة</th>
-
-            <th class="p-4 text-center lg:p-5">الإجراءات</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr
-            v-for="campaign in campaigns"
-            :key="campaign.id"
-            class="border-t border-slate-100 transition hover:bg-slate-50"
-          >
-            <td class="p-4 font-medium lg:p-5">
-              {{ campaign.name }}
-            </td>
-
-            <td class="p-4 lg:p-5">
-              {{ campaign.client }}
-            </td>
-
-            <td class="p-4 lg:p-5">
-              {{ campaign.platform }}
-            </td>
-
-            <td class="p-4 lg:p-5">
-              {{ campaign.budget }}
-            </td>
-
-            
-
-            <td class="p-4 lg:p-5">
-              <span
-                :class="[
-                  'inline-flex rounded-full px-3 py-1 text-xs font-semibold',
-                  campaign.status === 'نشطة'
-                    ? 'bg-green-100 text-green-700'
-                    : campaign.status === 'مكتملة'
-                      ? 'bg-blue-100 text-blue-700'
-                      : 'bg-red-100 text-red-700',
-                ]"
-              >
-                {{ campaign.status }}
-              </span>
-            </td>
-
-            <td class="p-4 lg:p-5">
-              {{ campaign.roas }}
-            </td>
-
-            
-          </tr>
-        </tbody>
-      </table>
+      جاري تحميل الحملات...
     </div>
 
-    <!-- ========================= -->
-    <!-- Mobile Cards -->
-    <!-- ========================= -->
+    <!-- Error -->
 
-    <div class="space-y-4 md:hidden">
+    <div
+      v-else-if="error"
+      class="p-6 text-center text-red-600"
+    >
+      {{ error }}
+    </div>
+
+    <!-- Data -->
+
+    <template v-else>
+
+      <!-- ========================= -->
+      <!-- Desktop / Tablet Table -->
+      <!-- ========================= -->
+
       <div
-        v-for="campaign in campaigns"
-        :key="campaign.id"
-        class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+        class="hidden overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm md:block"
       >
-        <!-- Card Header -->
+        <table class="w-full">
 
-        <div class="mb-4 flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <h2 class="truncate text-base font-semibold text-slate-900">
-              {{ campaign.name }}
-            </h2>
+          <thead class="bg-slate-50">
+            <tr>
+              <th class="p-4 text-right lg:p-5">
+                اسم الحملة
+              </th>
 
-            <p class="mt-1 truncate text-sm text-slate-500">
-              {{ campaign.client }}
-            </p>
-          </div>
+              <th class="p-4 text-right lg:p-5">
+                العميل
+              </th>
 
-          <!-- Status -->
+              <th class="p-4 text-right lg:p-5">
+                المنصة
+              </th>
 
-          <span
-            class="shrink-0 rounded-full px-3 py-1 text-xs font-semibold"
-            :class="
-              campaign.status === 'نشطة'
-                ? 'bg-green-100 text-green-700'
-                : campaign.status === 'مكتملة'
-                  ? 'bg-blue-100 text-blue-700'
-                  : 'bg-red-100 text-red-700'
-            "
-          >
-            {{ campaign.status }}
-          </span>
-        </div>
+              <th class="p-4 text-right lg:p-5">
+                الميزانية
+              </th>
 
-        <!-- Campaign Information -->
+              <th class="p-4 text-right lg:p-5">
+                الحالة
+              </th>
 
-        <div class="grid grid-cols-2 gap-3">
-          <!-- Platform -->
+              <th class="p-4 text-center lg:p-5">
+                المنصرف
+              </th>
+            </tr>
+          </thead>
 
-          <div class="rounded-xl bg-slate-50 p-3">
-            <p class="text-xs text-slate-500">المنصة</p>
+          <tbody>
+            <tr
+              v-for="campaign in campaigns"
+              :key="campaign.id"
+              class="border-t border-slate-100 transition hover:bg-slate-50"
+            >
 
-            <p class="mt-1 text-sm font-medium text-slate-900">
-              {{ campaign.platform }}
-            </p>
-          </div>
+              <td class="p-4 font-medium lg:p-5">
+                {{ campaign.name }}
+              </td>
 
-          <!-- Budget -->
+              <td class="p-4 lg:p-5">
+                {{ campaign.client }}
+              </td>
 
-          <div class="rounded-xl bg-slate-50 p-3">
-            <p class="text-xs text-slate-500">الميزانية</p>
+              <td class="p-4 lg:p-5">
+                {{ campaign.platform }}
+              </td>
 
-            <p class="mt-1 text-sm font-medium text-slate-900">
-              {{ campaign.budget }}
-            </p>
-          </div>
+              <td class="p-4 lg:p-5">
+                {{ formatMoney(campaign.budget) }}
+              </td>
 
-          <!-- Spent -->
+              <td class="p-4 lg:p-5">
+                <span
+                  :class="[
+                    'inline-flex rounded-full px-3 py-1 text-xs font-semibold',
+                    campaign.status === 'نشطة'
+                      ? 'bg-green-100 text-green-700'
+                      : campaign.status === 'مكتملة'
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'bg-red-100 text-red-700',
+                  ]"
+                >
+                  {{ campaign.status }}
+                </span>
+              </td>
 
-          <div class="rounded-xl bg-slate-50 p-3">
-            <p class="text-xs text-slate-500">ROAS</p>
+              <td class="p-4 text-center lg:p-5">
+                {{ formatMoney(campaign.spent) }}
+              </td>
 
-            <p class="mt-1 text-sm font-medium text-slate-900">
-              {{ campaign.roas }}
-            </p>
-          </div>
+            </tr>
+          </tbody>
 
-        </div>
-
-        
+        </table>
       </div>
-    </div>
-    
 
+      <!-- ========================= -->
+      <!-- Mobile Cards -->
+      <!-- ========================= -->
 
+      <div class="space-y-4 p-4 md:hidden">
 
-    <!-- <table class="w-full">
-
-      <thead class="bg-slate-50">
-
-        <tr>
-
-          <th class="p-4 text-right">الحملة</th>
-
-          <th class="text-right">العميل</th>
-
-          <th class="text-right">المنصة</th>
-
-          <th class="text-right">الميزانية</th>
-
-          <th class="text-right">الحالة</th>
-
-          <th class="text-right">ROAS</th>
-
-        </tr>
-
-      </thead>
-
-      <tbody>
-
-        <tr
+        <div
           v-for="campaign in campaigns"
-          :key="campaign.name"
-          class="border-t border-slate-100 hover:bg-slate-50"
+          :key="campaign.id"
+          class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
         >
-          <td class="p-4 font-medium">
 
-            {{ campaign.name }}
+          <!-- Card Header -->
 
-          </td>
+          <div class="mb-4 flex items-start justify-between gap-3">
 
-          <td>{{ campaign.client }}</td>
+            <div class="min-w-0">
 
-          <td>{{ campaign.platform }}</td>
+              <h2
+                class="truncate text-base font-semibold text-slate-900"
+              >
+                {{ campaign.name }}
+              </h2>
 
-          <td>{{ campaign.budget }}</td>
+              <p
+                class="mt-1 truncate text-sm text-slate-500"
+              >
+                {{ campaign.client }}
+              </p>
 
-          <td>
+            </div>
+
+            <!-- Status -->
 
             <span
-              class="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-700"
+              class="shrink-0 rounded-full px-3 py-1 text-xs font-semibold"
+              :class="
+                campaign.status === 'نشطة'
+                  ? 'bg-green-100 text-green-700'
+                  : campaign.status === 'مكتملة'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'bg-red-100 text-red-700'
+              "
             >
               {{ campaign.status }}
             </span>
 
-          </td>
+          </div>
 
-          <td class="font-semibold">
+          <!-- Campaign Information -->
 
-            {{ campaign.roas }}
+          <div class="grid grid-cols-2 gap-3">
 
-          </td>
+            <!-- Platform -->
 
-        </tr>
+            <div class="rounded-xl bg-slate-50 p-3">
 
-      </tbody>
+              <p class="text-xs text-slate-500">
+                المنصة
+              </p>
 
-    </table>  -->
+              <p class="mt-1 text-sm font-medium text-slate-900">
+                {{ campaign.platform }}
+              </p>
+
+            </div>
+
+            <!-- Budget -->
+
+            <div class="rounded-xl bg-slate-50 p-3">
+
+              <p class="text-xs text-slate-500">
+                الميزانية
+              </p>
+
+              <p class="mt-1 text-sm font-medium text-slate-900">
+                {{ formatMoney(campaign.budget) }}
+              </p>
+
+            </div>
+
+            <!-- Spent -->
+
+            <div class="rounded-xl bg-slate-50 p-3">
+
+              <p class="text-xs text-slate-500">
+                المنصرف
+              </p>
+
+              <p class="mt-1 text-sm font-medium text-slate-900">
+                {{ formatMoney(campaign.spent) }}
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </template>
 
   </div>
 </template>
