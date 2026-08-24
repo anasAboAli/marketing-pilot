@@ -69,3 +69,29 @@ export async function getTopEmployees() {
     totalValue: Number(row.total_value || 0),
   }));
 }
+
+export async function getTopCampaigns() {
+  const [rows] = await db.query(`
+    SELECT
+      id,
+      name,
+      client,
+      platform,
+      budget,
+      spent,
+      status
+    FROM campaigns
+    ORDER BY spent DESC
+    LIMIT 5
+  `);
+
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    client: row.client,
+    platform: row.platform,
+    budget: Number(row.budget || 0),
+    spent: Number(row.spent || 0),
+    status: row.status,
+  }));
+}
