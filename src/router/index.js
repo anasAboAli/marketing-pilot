@@ -71,6 +71,11 @@ const routes = [
         component: DashboardPage,
       },
       {
+        path: "dashboard",
+        name: "dashboard-page",
+        component: DashboardPage,
+      },
+      {
         path: "campaigns",
         name: "campaigns",
         component: CampaignsPage,
