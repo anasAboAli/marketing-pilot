@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import "dotenv/config";
 
 import clientsRoutes from "./routes/clients.routes.js";
 import leadsRoutes from "./routes/leads.routes.js";

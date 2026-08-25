@@ -5,6 +5,7 @@ import {
   getMonthlyRevenue,
   getTopEmployees,
   getTopCampaigns,
+  getRecentLeads,
 } from "../services/dashboard.service.js";
 
 const router = express.Router();
@@ -78,6 +79,20 @@ router.get("/top-campaigns", async (req, res) => {
 
     res.status(500).json({
       error: "Failed to load top campaigns",
+    });
+  }
+});
+
+router.get("/recent-leads", async (req, res) => {
+  try {
+    const data = await getRecentLeads();
+
+    res.json(data);
+  } catch (error) {
+    console.error("GET /dashboard/recent-leads:", error);
+
+    res.status(500).json({
+      error: "Failed to load recent leads",
     });
   }
 });

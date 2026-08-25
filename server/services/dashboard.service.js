@@ -95,3 +95,27 @@ export async function getTopCampaigns() {
     status: row.status,
   }));
 }
+
+export async function getRecentLeads() {
+  const [rows] = await db.query(`
+    SELECT
+      id,
+      name,
+      company,
+      status,
+      value,
+      created_at AS createdAt
+    FROM leads
+    ORDER BY id DESC
+    LIMIT 5
+  `);
+
+  return rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+    company: row.company,
+    status: row.status,
+    value: Number(row.value || 0),
+    createdAt: row.createdAt,
+  }));
+}

@@ -8,7 +8,6 @@ import TopCampaigns from "@/components/dashboard/TopCampaigns.vue";
 import TopEmployees from "@/components/dashboard/TopEmployees.vue";
 import RecentLeads from "@/components/dashboard/RecentLeads.vue";
 import ActivityTimeline from "@/components/dashboard/ActivityTimeline.vue";
-import CalendarWidget from "@/components/dashboard/CalendarWidget.vue";
 
 </script>
 
@@ -48,7 +47,6 @@ import CalendarWidget from "@/components/dashboard/CalendarWidget.vue";
 
 </div>
 
-<CalendarWidget/>
 
 </div>
 

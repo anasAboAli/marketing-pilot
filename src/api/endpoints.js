@@ -6,6 +6,7 @@ dashboardRevenueByPlatform: "/dashboard/revenue-by-platform",
 dashboardMonthlyRevenue: "/dashboard/monthly-revenue",
 dashboardTopEmployees: "/dashboard/top-employees",
 dashboardTopCampaigns: "/dashboard/top-campaigns",
+dashboardRecentLeads: "/dashboard/recent-leads",
 
 campaigns:"/campaigns",
 
