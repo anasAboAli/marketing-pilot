@@ -7,7 +7,8 @@ import leadsRoutes from "./routes/leads.routes.js";
 import campaignsRoutes from "./routes/campaigns.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import teamRoutes from "./routes/team.routes.js";
-
+import settingsRoutes from "./routes/settings.routes.js";
+import reportsRoutes from "./routes/reports.routes.js";
 
 import { initializeDatabase } from "./db/initDatabase.js";
 
@@ -39,6 +40,8 @@ app.use("/api/leads", leadsRoutes);
 app.use("/api/campaigns", campaignsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/team", teamRoutes);
+app.use("/api/settings", settingsRoutes);
+app.use("/api/reports", reportsRoutes);
 
 // Start server
 async function startServer() {

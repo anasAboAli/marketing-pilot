@@ -16,7 +16,9 @@ leads:"/leads",
 
 users:"/users",
 
-reports:"/reports",
+reports: "/reports",
+reportsSummary: "/reports/summary",
+reportsAiAnalysis: "/reports/ai-analysis",
 
 notifications:"/notifications",
 

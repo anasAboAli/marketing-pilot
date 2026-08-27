@@ -12,6 +12,7 @@
     "start": "node server/server.js"
   },
   "dependencies": {
+    "@google/genai": "^2.19.0",
     "@heroicons/vue": "^2.2.0",
     "@vueuse/core": "^14.4.0",
     "apexcharts": "^6.7.0",

@@ -26,7 +26,13 @@ export async function initializeDatabase() {
       SELECT COUNT(*) AS count
       FROM information_schema.tables
       WHERE table_schema = ?
-      AND table_name IN ('clients', 'campaigns', 'leads', 'team_members')
+      AND table_name IN (
+        'clients',
+        'campaigns',
+        'leads',
+        'team_members',
+        'settings'
+      )
       `,
       [database]
     );
@@ -34,19 +40,22 @@ export async function initializeDatabase() {
     const tableCount = Number(tables[0].count);
     
     await connection.query(`
-  CREATE TABLE IF NOT EXISTS team_members (
+  CREATE TABLE IF NOT EXISTS settings (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(150) NOT NULL,
-    role VARCHAR(150) NOT NULL,
-    email VARCHAR(150) DEFAULT '',
-    phone VARCHAR(50) DEFAULT '',
-    status ENUM('نشط', 'غير نشط') DEFAULT 'نشط',
+    agency_name VARCHAR(150) NOT NULL DEFAULT '',
+    email VARCHAR(150) NOT NULL DEFAULT '',
+    phone VARCHAR(50) NOT NULL DEFAULT '',
+    currency VARCHAR(10) NOT NULL DEFAULT 'SAR',
+    timezone VARCHAR(100) NOT NULL DEFAULT 'Asia/Riyadh',
+    notify_leads TINYINT(1) NOT NULL DEFAULT 1,
+    notify_campaigns TINYINT(1) NOT NULL DEFAULT 1,
+    notify_team TINYINT(1) NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   )
 `);
 
-    if (tableCount === 4) {
+    if (tableCount === 5) {
       console.log("Database already initialized.");
       return;
     }
