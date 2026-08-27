@@ -28,7 +28,10 @@ async function login() {
   <div class="flex min-h-screen items-center justify-center bg-slate-100">
     <div class="w-full max-w-md rounded-2xl bg-white p-8 shadow">
       <h1 class="mb-8 text-center text-3xl font-bold">تسجيل الدخول</h1>
-
+      <h1 class="mb-8 text-center text-3xl font-bold">
+        اضغط <span style="color: oklch(54.6% 0.245 262.881)">دخول</span> لرؤية
+        الموقع
+      </h1>
       <div class="mb-5">
         <label class="mb-2 block"> البريد الإلكتروني </label>
 
