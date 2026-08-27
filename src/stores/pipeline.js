@@ -1,111 +1,100 @@
 import { defineStore } from "pinia";
+import leadsService from "@/services/leads.service";
+
+const stageDefinitions = [
+  {
+    id: 1,
+    name: "عميل جديد",
+    statuses: ["جديد"],
+  },
+  {
+    id: 2,
+    name: "تم التواصل",
+    statuses: ["تم التواصل"],
+  },
+  {
+    id: 3,
+    name: "عرض سعر",
+    statuses: ["عرض سعر"],
+  },
+  {
+    id: 4,
+    name: "تم التعاقد",
+    statuses: ["تم التعاقد"],
+  },
+];
 
 export const usePipelineStore = defineStore("pipeline", {
+  state: () => ({
+    stages: stageDefinitions.map((stage) => ({
+      ...stage,
+      items: [],
+    })),
 
-state: () => ({
+    loading: false,
+    error: "",
+  }),
 
-stages: [
+  getters: {
+    totalLeads: (state) =>
+      state.stages.reduce(
+        (total, stage) => total + stage.items.length,
+        0
+      ),
 
-{
+    totalValue: (state) =>
+      state.stages.reduce(
+        (total, stage) =>
+          total +
+          stage.items.reduce(
+            (sum, lead) => sum + Number(lead.value || 0),
+            0
+          ),
+        0
+      ),
+  },
 
-id:1,
+  actions: {
+    async loadLeads() {
+      try {
+        this.loading = true;
+        this.error = "";
 
-name:"عملاء جدد",
+        const leads = await leadsService.getAll();
 
-items:[
+        this.stages = stageDefinitions.map((stage) => ({
+          ...stage,
+          items: leads
+            .filter((lead) =>
+              stage.statuses.includes(lead.status)
+            )
+            .map((lead) => ({
+              id: lead.id,
+              client: lead.name,
+              company: lead.company,
+              value: Number(lead.value || 0),
+              status: lead.status,
+              source: lead.source,
+              assignedTo: lead.assignedTo,
+              phone: lead.phone,
+              email: lead.email,
+            })),
+        }));
+      } catch (error) {
+        console.error("Pipeline load:", error);
 
-{
+        this.error =
+          error.response?.data?.error ||
+          error.message ||
+          "تعذر تحميل بيانات المبيعات";
 
-id:1,
-
-client:"شركة الريادة",
-
-value:18000,
-
-},
-
-{
-
-id:2,
-
-client:"عيادات النخبة",
-
-value:9000,
-
-}
-
-]
-
-},
-
-{
-
-id:2,
-
-name:"تم التواصل",
-
-items:[
-
-{
-
-id:3,
-
-client:"شركة التقنية",
-
-value:22000,
-
-}
-
-]
-
-},
-
-{
-
-id:3,
-
-name:"عرض سعر",
-
-items:[
-
-{
-
-id:4,
-
-client:"متجر الأناقة",
-
-value:12000,
-
-}
-
-]
-
-},
-
-{
-
-id:4,
-
-name:"تم التعاقد",
-
-items:[
-
-{
-
-id:5,
-
-client:"شركة السفر",
-
-value:31000,
-
-}
-
-]
-
-}
-
-]
-
-})
-
+        this.stages = stageDefinitions.map((stage) => ({
+          ...stage,
+          items: [],
+        }));
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
 });

@@ -38,7 +38,6 @@ const mobileNavigation = [
   { label: "العملاء", to: "/clients", icon: "♙" },
   { label: "العملاء المحتملون", to: "/leads", icon: "♙" },
   { label: "المبيعات", to: "/crm/pipeline", icon: "◈" },
-  { label: "التحليلات", to: "/analytics", icon: "▥" },
   { label: "التقارير", to: "/reports", icon: "▥" },
   { label: "الفريق", to: "/team", icon: "♙" },
   { label: "الإعدادات", to: "/settings", icon: "⚙" },
@@ -46,7 +45,6 @@ const mobileNavigation = [
 </script>
 
 <style>
-
 @media (max-width: 700px) {
   .sidebar {
     overflow-x: auto;

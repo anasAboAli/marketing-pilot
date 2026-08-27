@@ -10,7 +10,6 @@ const navigation = [
   { label: "العملاء", to: "/clients", icon: "users" },
   { label: "العملاء المحتملون", to: "/leads", icon: "user-plus" },
   { label: "المبيعات وCRM", to: "/crm/pipeline", icon: "briefcase" },
-  { label: "التحليلات", to: "/analytics", icon: "chart" },
   { label: "التقارير", to: "/reports", icon: "document" },
   { label: "الفريق", to: "/team", icon: "users" },
   { label: "الإعدادات", to: "/settings", icon: "settings" },
@@ -54,7 +53,10 @@ const activePath = computed(() => route.path);
         <span>{{ item.label }}</span>
       </RouterLink>
     </nav>
-    <div class="absolute bottom-0 w-[280px] border-t border-slate-200 p-4">
+    <div
+      style="bottom: -10px; border-top: none"
+      class="absolute bottom-0 w-[280px] border-t border-slate-200 p-4"
+    >
       <RouterLink
         to="/workspace"
         class="flex items-center gap-3 rounded-xl bg-slate-50 p-3 text-sm text-slate-600 transition hover:bg-blue-50 hover:text-blue-700"

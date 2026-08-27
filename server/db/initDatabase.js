@@ -26,14 +26,27 @@ export async function initializeDatabase() {
       SELECT COUNT(*) AS count
       FROM information_schema.tables
       WHERE table_schema = ?
-      AND table_name IN ('clients', 'campaigns', 'leads')
+      AND table_name IN ('clients', 'campaigns', 'leads', 'team_members')
       `,
       [database]
     );
 
     const tableCount = Number(tables[0].count);
+    
+    await connection.query(`
+  CREATE TABLE IF NOT EXISTS team_members (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    role VARCHAR(150) NOT NULL,
+    email VARCHAR(150) DEFAULT '',
+    phone VARCHAR(50) DEFAULT '',
+    status ENUM('نشط', 'غير نشط') DEFAULT 'نشط',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )
+`);
 
-    if (tableCount === 3) {
+    if (tableCount === 4) {
       console.log("Database already initialized.");
       return;
     }

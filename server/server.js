@@ -6,6 +6,7 @@ import clientsRoutes from "./routes/clients.routes.js";
 import leadsRoutes from "./routes/leads.routes.js";
 import campaignsRoutes from "./routes/campaigns.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
+import teamRoutes from "./routes/team.routes.js";
 
 
 import { initializeDatabase } from "./db/initDatabase.js";
@@ -37,6 +38,7 @@ app.use("/api/clients", clientsRoutes);
 app.use("/api/leads", leadsRoutes);
 app.use("/api/campaigns", campaignsRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/team", teamRoutes);
 
 // Start server
 async function startServer() {

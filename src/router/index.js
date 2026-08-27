@@ -9,7 +9,6 @@ import ClientsPage from "@/pages/clients/ClientsPage.vue";
 import ClientDetailsPage from "@/pages/clients/ClientDetailsPage.vue";
 import LeadsPage from "@/pages/leads/LeadsPage.vue";
 import LeadDetailsPage from "@/pages/leads/LeadDetailsPage.vue";
-import Analytics from "@/pages/analytics/AnalyticsPage.vue";
 import ReportsPage from "@/pages/reports/ReportsPage.vue";
 import TeamPage from "@/pages/team/TeamPage.vue";
 import SettingsPage from "@/pages/settings/SettingsPage.vue";
@@ -109,11 +108,6 @@ const routes = [
         path: "leads/:id",
         name: "lead-details",
         component: LeadDetailsPage,
-      },
-      {
-        path: "analytics",
-        name: "analytics",
-        component: Analytics,
       },
       {
         path: "reports",

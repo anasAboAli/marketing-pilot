@@ -20,11 +20,6 @@ export const navigation = [
     icon: "user-plus",
 },
   {
-    title: "التحليلات",
-    route: "/analytics",
-    icon: "chart",
-  },
-  {
     title: "التقارير",
     route: "/reports",
     icon: "document",
