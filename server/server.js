@@ -11,6 +11,7 @@ import settingsRoutes from "./routes/settings.routes.js";
 import reportsRoutes from "./routes/reports.routes.js";
 
 import { initializeDatabase } from "./db/initDatabase.js";
+import pool from "./db/connection.js";
 
 const app = express();
 
@@ -26,12 +27,14 @@ app.use(
 
 app.use(express.json());
 
-// Health check
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "ok",
-    database: "marketpilot_db",
-  });
+// Health check (also pings the database so uptime pings keep it awake)
+app.get("/api/health", async (req, res) => {
+  try {
+    await pool.query("SELECT 1");
+    res.json({ status: "ok", database: "connected" });
+  } catch (error) {
+    res.status(503).json({ status: "error", database: error.message });
+  }
 });
 
 // API Routes

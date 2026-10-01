@@ -5,7 +5,8 @@ const api = axios.create({
     import.meta.env.VITE_API_URL ||
     "http://localhost:3001/api",
 
-  timeout: 10000,
+  // Render free tier sleeps when idle; the first request can take ~50s
+  timeout: 60000,
 
   headers: {
     Accept: "application/json",

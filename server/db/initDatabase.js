@@ -2,18 +2,13 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import mysql from "mysql2/promise";
+import { connectionConfig as baseConfig, database } from "./config.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const database = process.env.DB_NAME || process.env.MYSQLDATABASE;
-
 const connectionConfig = {
-  host: process.env.DB_HOST || process.env.MYSQLHOST,
-  port: Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306),
-  user: process.env.DB_USER || process.env.MYSQLUSER,
-  password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD,
-  database,
+  ...baseConfig,
   multipleStatements: true,
 };
 
